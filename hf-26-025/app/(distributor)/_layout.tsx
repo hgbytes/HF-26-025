@@ -76,6 +76,13 @@ export default function DistributorLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={24} name="clock.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="alerts"
+        options={{
+          title: 'Alerts',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="exclamationmark.triangle.fill" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }

@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, ScrollView, View, TouchableOpacity, Image, StatusBar, ActivityIndicator } from 'react-native';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { StyleSheet, ScrollView, View, TouchableOpacity, Image, StatusBar, ActivityIndicator, Share, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { HC, RoleColors, CardShadow } from '@/constants/theme';
 import { api } from '@/services/api';
 import { useAuth } from '@/contexts/auth-context';
+import QRCode from 'react-native-qrcode-svg';
 
 const R = RoleColors.manufacturer;
 
@@ -94,14 +95,68 @@ export default function HomeScreen() {
 
   const recentBatches = [...batches]
     .sort((a, b) => (b.registeredAt ?? 0) - (a.registeredAt ?? 0))
-    .slice(0, 5)
-    .map((b) => ({
-      id: shortId(b.batchId),
-      drug: b.drugName,
-      qty: b.quantity.toLocaleString(),
-      status: STATUS_MAP[b.status] ?? 'Registered',
-      time: timeAgo(b.registeredAt ?? 0),
-    }));
+    .slice(0, 5);
+
+  const [selectedBatch, setSelectedBatch] = useState<RawBatch | null>(null);
+  const qrRef = useRef<any>(null);
+
+  // ── Batch Detail View ──
+  if (selectedBatch) {
+    const b = selectedBatch;
+    const statusLabel = STATUS_MAP[b.status] ?? 'Registered';
+    const sc = statusColor[statusLabel] || statusColor.Registered;
+    const qrData = JSON.stringify({ batchId: b.batchId, drug: b.drugName, region: b.region, quantity: b.quantity, expiryDate: b.expiryDate });
+
+    const fmtDate = (ts: number) => {
+      if (!ts) return '—';
+      return new Date(ts * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    };
+
+    const handleShareQR = async () => {
+      try {
+        await Share.share({
+          message: `MedChain TN Batch\nBatch ID: ${b.batchId}\nDrug: ${b.drugName}\nQuantity: ${b.quantity}\nRegion: ${b.region}\nExpiry: ${fmtDate(b.expiryDate)}`,
+        });
+      } catch {
+        // user cancelled
+      }
+    };
+
+    return (
+      <View style={styles.root}>
+        <StatusBar barStyle="dark-content" />
+        <ScrollView style={styles.scroll} contentContainerStyle={{ padding: 20, paddingBottom: 48 }} showsVerticalScrollIndicator={false}>
+          <TouchableOpacity onPress={() => setSelectedBatch(null)} style={{ marginBottom: 16 }}>
+            <ThemedText style={{ fontSize: 14, fontWeight: '600', color: HC.primary }}>← Back to Home</ThemedText>
+          </TouchableOpacity>
+
+          <ThemedText style={{ fontSize: 22, fontWeight: '800', color: HC.text, letterSpacing: -0.3, marginBottom: 20 }}>Batch Details</ThemedText>
+
+          {/* QR Code */}
+          <View style={[styles.detailCard, { alignItems: 'center', paddingVertical: 28 }]}>
+            <QRCode value={qrData} size={180} color={HC.text} backgroundColor={HC.card} getRef={(ref: any) => (qrRef.current = ref)} />
+            <ThemedText style={{ fontSize: 12, color: HC.textMuted, marginTop: 14 }}>Scan to verify batch authenticity</ThemedText>
+            <TouchableOpacity onPress={handleShareQR} style={styles.shareBtn} activeOpacity={0.7}>
+              <ThemedText style={styles.shareBtnText}>Share QR as Image</ThemedText>
+            </TouchableOpacity>
+          </View>
+
+          {/* Info */}
+          <View style={styles.detailCard}>
+            <ThemedText style={styles.detailSectionTitle}>BATCH INFORMATION</ThemedText>
+            <DetailRow label="Batch ID" value={shortId(b.batchId)} mono />
+            <DetailRow label="Drug" value={b.drugName} />
+            <DetailRow label="Quantity" value={`${b.quantity.toLocaleString()} units`} />
+            <DetailRow label="Region" value={b.region} />
+            <DetailRow label="Expiry Date" value={fmtDate(b.expiryDate)} />
+            <DetailRow label="Registered" value={fmtDate(b.registeredAt ?? 0)} />
+            <DetailRow label="Status" value={statusLabel} valueSc={sc} />
+            <DetailRow label="Owner" value={b.currentOwner ? shortId(b.currentOwner) : '—'} mono />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.root}>
@@ -188,22 +243,23 @@ export default function HomeScreen() {
               </View>
             ) : (
               recentBatches.map((b, i) => {
-                const sc = statusColor[b.status] || statusColor.Registered;
+                const label = STATUS_MAP[b.status] ?? 'Registered';
+                const sc = statusColor[label] || statusColor.Registered;
                 return (
-                  <View key={b.id + i} style={[styles.batchRow, i < recentBatches.length - 1 && styles.batchDivider]}>
+                  <TouchableOpacity key={b.batchId + i} style={[styles.batchRow, i < recentBatches.length - 1 && styles.batchDivider]} activeOpacity={0.6} onPress={() => setSelectedBatch(b)}>
                     <View style={styles.batchLeft}>
                       <View style={styles.batchHeader}>
-                        <ThemedText style={styles.batchDrug}>{b.drug}</ThemedText>
-                        <ThemedText style={styles.batchTime}>{b.time}</ThemedText>
+                        <ThemedText style={styles.batchDrug}>{b.drugName}</ThemedText>
+                        <ThemedText style={styles.batchTime}>{timeAgo(b.registeredAt ?? 0)}</ThemedText>
                       </View>
-                      <ThemedText style={styles.batchId}>{b.id}</ThemedText>
-                      <ThemedText style={styles.batchQty}>{b.qty} units</ThemedText>
+                      <ThemedText style={styles.batchId}>{shortId(b.batchId)}</ThemedText>
+                      <ThemedText style={styles.batchQty}>{b.quantity.toLocaleString()} units</ThemedText>
                     </View>
                     <View style={[styles.statusPill, { backgroundColor: sc.bg }]}>
                       <View style={[styles.statusDot, { backgroundColor: sc.dot }]} />
-                      <ThemedText style={[styles.statusText, { color: sc.text }]}>{b.status}</ThemedText>
+                      <ThemedText style={[styles.statusText, { color: sc.text }]}>{label}</ThemedText>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 );
               })
             )}
@@ -230,6 +286,28 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+function DetailRow({ label, value, mono, valueSc }: { label: string; value: string; mono?: boolean; valueSc?: { text: string; bg: string; dot: string } }) {
+  return (
+    <View style={detailRowStyles.row}>
+      <ThemedText style={detailRowStyles.label}>{label}</ThemedText>
+      {valueSc ? (
+        <View style={[styles.statusPill, { backgroundColor: valueSc.bg }]}>
+          <View style={[styles.statusDot, { backgroundColor: valueSc.dot }]} />
+          <ThemedText style={[styles.statusText, { color: valueSc.text }]}>{value}</ThemedText>
+        </View>
+      ) : (
+        <ThemedText style={[detailRowStyles.value, mono && { fontFamily: 'monospace', fontSize: 11 }]}>{value}</ThemedText>
+      )}
+    </View>
+  );
+}
+
+const detailRowStyles = StyleSheet.create({
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: HC.borderLight },
+  label: { fontSize: 12, fontWeight: '600', color: HC.textMuted, textTransform: 'uppercase', letterSpacing: 0.3 },
+  value: { fontSize: 13, fontWeight: '600', color: HC.text, maxWidth: '55%' as any, textAlign: 'right' },
+});
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: HC.bg },
@@ -371,4 +449,35 @@ const styles = StyleSheet.create({
   networkValue: { fontSize: 22, fontWeight: '800', color: '#ffffff' },
   networkLabel: { fontSize: 10, color: 'rgba(255,255,255,0.5)', fontWeight: '600', marginTop: 4, textTransform: 'uppercase', letterSpacing: 0.3 },
   networkDivider: { width: 1, height: 32, backgroundColor: 'rgba(255,255,255,0.08)', marginHorizontal: 8 },
+
+  // Batch detail view styles
+  detailCard: {
+    backgroundColor: HC.card,
+    borderRadius: HC.radiusLg,
+    padding: 20,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: HC.borderLight,
+    ...CardShadow,
+  },
+  detailSectionTitle: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: HC.textMuted,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginBottom: 8,
+  },
+  shareBtn: {
+    marginTop: 18,
+    backgroundColor: HC.primary,
+    paddingHorizontal: 28,
+    paddingVertical: 12,
+    borderRadius: HC.radiusFull,
+  },
+  shareBtnText: {
+    color: '#ffffff',
+    fontSize: 13,
+    fontWeight: '700',
+  },
 });

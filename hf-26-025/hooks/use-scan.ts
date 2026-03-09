@@ -78,28 +78,12 @@ export function useScan() {
 
       if (daysLeft < 0) {
         const r: ScanResult = { result: 'expired', drug: v.drugName, batchId, expiryDate: fmtDate(v.expiryDate), daysLeft, safeToUse: false };
-        setScanResult(r); setState('result'); return r;
+        setScanResult(r); setState('result');
+        // Report expired batch to backend (fire-and-forget)
+        api.post(`/batches/${encodeURIComponent(batchId)}/report-expired`, {}).catch(() => {});
+        return r;
       }
 
-  /** Parse QR data (JSON string from manufacturer QR) and verify the batch */
-  const verifyFromQR = useCallback(async (rawData: string): Promise<ScanResult> => {
-    let batchId: string;
-    try {
-      const parsed = JSON.parse(rawData);
-      batchId = parsed.batchId || rawData;
-    } catch {
-      // Not JSON — treat the raw string as a batch ID
-      batchId = rawData.trim();
-    }
-    return verifyBatch(batchId);
-  }, [verifyBatch]);
-
-  const resetScan = useCallback(() => {
-    setState('scanning');
-    setScanResult(null);
-  }, []);
-
-  return { state, scanResult, verifyBatch, verifyFromQR, resetScan };
       const r: ScanResult = {
         result: 'authentic', drug: v.drugName, batchId,
         manufacturer: v.ownerName || v.currentOwner, manufacturerVerified: v.isValid,
@@ -112,7 +96,22 @@ export function useScan() {
     }
   }, []);
 
-  const resetScan = useCallback(() => { setState('scanning'); setScanResult(null); }, []);
+  /** Parse QR data (JSON string from manufacturer QR) and verify the batch */
+  const verifyFromQR = useCallback(async (rawData: string): Promise<ScanResult> => {
+    let batchId: string;
+    try {
+      const parsed = JSON.parse(rawData);
+      batchId = parsed.batchId || rawData;
+    } catch {
+      batchId = rawData.trim();
+    }
+    return verifyBatch(batchId);
+  }, [verifyBatch]);
 
-  return { state, scanResult, verifyBatch, resetScan };
+  const resetScan = useCallback(() => {
+    setState('scanning');
+    setScanResult(null);
+  }, []);
+
+  return { state, scanResult, verifyBatch, verifyFromQR, resetScan };
 }

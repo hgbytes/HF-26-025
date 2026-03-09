@@ -104,11 +104,7 @@ export default function PatientHomeScreen() {
         {drugs.map((drug) => (
           <DrugAvailabilityCard
             key={drug.code}
-            name={drug.name}
-            form={drug.form}
-            badge={drug.badge}
-            pharmacyCount={drug.pharmacyCount}
-            price={drug.price}
+            drug={drug}
             onPress={() => {
               setSelectedDrug(drug.code);
               setView('drugDetail');

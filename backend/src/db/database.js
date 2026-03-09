@@ -80,6 +80,22 @@ function initSchema() {
       action_target TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
+
+    CREATE TABLE IF NOT EXISTS alerts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      target_wallet TEXT NOT NULL,
+      target_role TEXT NOT NULL,
+      type TEXT NOT NULL,
+      severity TEXT NOT NULL DEFAULT 'high',
+      title TEXT NOT NULL,
+      description TEXT NOT NULL,
+      batch_id TEXT,
+      drug TEXT,
+      region TEXT,
+      reported_by TEXT,
+      read INTEGER NOT NULL DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
   `);
 }
 
