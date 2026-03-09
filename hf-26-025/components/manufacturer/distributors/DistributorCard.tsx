@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import { MFG, CardShadow } from '@/constants/theme';
+import { HC, CardShadow } from '@/constants/theme';
+const MFG = HC;
 import { DistributorSummary } from '@/hooks/use-distributors';
 
 interface Props {

@@ -34,10 +34,10 @@ export function RegionFilterRow({ regions, selected, onSelect }: Props) {
 
 const styles = StyleSheet.create({
   container: { marginBottom: 16 },
-  label: { fontSize: 13, fontWeight: '600', color: '#687076', marginBottom: 8 },
+  label: { fontSize: 13, fontWeight: '600', color: '#64748b', marginBottom: 8 },
   row: { flexDirection: 'row', gap: 8 },
-  chip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f3f4f6' },
-  chipActive: { backgroundColor: '#0a7ea4' },
-  chipText: { fontSize: 13, fontWeight: '600', color: '#687076' },
+  chip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f1f5f9', borderWidth: 1, borderColor: '#e2e8f0' },
+  chipActive: { backgroundColor: '#059669', borderColor: '#059669' },
+  chipText: { fontSize: 13, fontWeight: '600', color: '#64748b' },
   chipTextActive: { color: '#fff' },
 });

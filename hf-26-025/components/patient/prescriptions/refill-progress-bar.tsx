@@ -9,7 +9,7 @@ interface Props {
 export function RefillProgressBar({ used, total }: Props) {
   const remaining = total - used;
   const pct = (used / total) * 100;
-  const color = remaining === 0 ? '#dc2626' : remaining <= 1 ? '#f59e0b' : '#0a7ea4';
+  const color = remaining === 0 ? '#dc2626' : remaining <= 1 ? '#f59e0b' : '#0891b2';
 
   return (
     <View style={styles.container}>
@@ -30,8 +30,8 @@ export function RefillProgressBar({ used, total }: Props) {
 const styles = StyleSheet.create({
   container: { marginBottom: 16 },
   header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  label: { fontSize: 14, fontWeight: '600', color: '#11181C' },
-  count: { fontSize: 13, color: '#687076' },
+  label: { fontSize: 14, fontWeight: '600', color: '#0f172a' },
+  count: { fontSize: 13, color: '#64748b' },
   trackBg: { height: 10, backgroundColor: '#e2e8f0', borderRadius: 5 },
   trackFill: { height: 10, borderRadius: 5 },
   remaining: { fontSize: 12, marginTop: 4 },

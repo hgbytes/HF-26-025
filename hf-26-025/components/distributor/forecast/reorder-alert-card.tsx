@@ -9,8 +9,8 @@ interface Props {
 
 const URGENCY_CONFIG: Record<string, { color: string; bg: string; label: string }> = {
   urgent: { color: '#dc2626', bg: '#fef2f2', label: 'Urgent' },
-  soon: { color: '#ca8a04', bg: '#fefce8', label: 'Reorder Soon' },
-  planned: { color: '#0a7ea4', bg: '#e8f4f8', label: 'Planned' },
+  soon: { color: '#d97706', bg: '#fffbeb', label: 'Reorder Soon' },
+  planned: { color: '#0891b2', bg: '#ecfeff', label: 'Planned' },
 };
 
 export function ReorderAlertCard({ alert, onPress }: Props) {
@@ -40,7 +40,7 @@ export function ReorderAlertCard({ alert, onPress }: Props) {
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>Suggested Order</ThemedText>
-        <ThemedText style={[styles.value, { color: '#0a7ea4' }]}>{alert.suggestedOrder.toLocaleString()} units</ThemedText>
+        <ThemedText style={[styles.value, { color: '#0891b2' }]}>{alert.suggestedOrder.toLocaleString()} units</ThemedText>
       </View>
     </TouchableOpacity>
   );
@@ -49,20 +49,22 @@ export function ReorderAlertCard({ alert, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     borderLeftWidth: 4,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  drug: { fontSize: 17, fontWeight: '700', color: '#11181C' },
-  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 12 },
+  drug: { fontSize: 16, fontWeight: '700', color: '#0f172a' },
+  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 10 },
   badgeText: { fontSize: 12, fontWeight: '600' },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4 },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
 });

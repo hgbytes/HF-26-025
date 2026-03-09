@@ -7,16 +7,16 @@ interface Props {
 }
 
 const TYPE_ICON: Record<string, string> = {
-  hospital: '🏥',
-  pharmacy: '💊',
-  clinic: '🏪',
+  hospital: 'H',
+  pharmacy: 'Rx',
+  clinic: 'C',
 };
 
 export function FacilityCard({ facility }: Props) {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <ThemedText style={styles.icon}>{TYPE_ICON[facility.type] || '🏥'}</ThemedText>
+        <ThemedText style={styles.icon}>{TYPE_ICON[facility.type] || 'H'}</ThemedText>
         <ThemedText style={styles.name}>{facility.name}</ThemedText>
       </View>
       <View style={styles.row}>
@@ -33,19 +33,21 @@ export function FacilityCard({ facility }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 },
-  icon: { fontSize: 18 },
-  name: { fontSize: 15, fontWeight: '700', color: '#11181C' },
+  icon: { fontSize: 13, fontWeight: '800', color: '#0891b2', backgroundColor: '#ecfeff', width: 28, height: 28, borderRadius: 8, textAlign: 'center', lineHeight: 28, overflow: 'hidden' },
+  name: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
   row: { marginBottom: 4 },
-  stock: { fontSize: 14, color: '#16a34a', fontWeight: '600' },
+  stock: { fontSize: 14, color: '#059669', fontWeight: '600' },
   meta: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  metaText: { fontSize: 13, color: '#687076' },
+  metaText: { fontSize: 13, color: '#64748b' },
 });

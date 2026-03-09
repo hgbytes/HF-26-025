@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { MFG } from '@/constants/theme';
+import { HC, RoleColors } from '@/constants/theme';
 import { Platform, TouchableOpacity, Text } from 'react-native';
 import { useAuth } from '@/contexts/auth-context';
+
+const R = RoleColors.manufacturer;
 
 export default function ManufacturerLayout() {
   const { logout } = useAuth();
@@ -11,28 +13,29 @@ export default function ManufacturerLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: MFG.primary,
-        tabBarInactiveTintColor: MFG.textMuted,
+        tabBarActiveTintColor: R.accent,
+        tabBarInactiveTintColor: HC.textMuted,
         headerShown: true,
         headerStyle: {
-          backgroundColor: MFG.card,
+          backgroundColor: HC.card,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 1,
-          borderBottomColor: MFG.borderLight,
+          borderBottomColor: HC.borderLight,
         },
         headerTitleStyle: {
           fontWeight: '700',
-          fontSize: 18,
-          color: MFG.text,
+          fontSize: 17,
+          color: HC.text,
+          letterSpacing: -0.2,
         },
         tabBarButton: HapticTab,
         tabBarStyle: {
-          backgroundColor: MFG.card,
+          backgroundColor: HC.card,
           borderTopWidth: 1,
-          borderTopColor: MFG.borderLight,
+          borderTopColor: HC.borderLight,
           height: Platform.OS === 'ios' ? 88 : 64,
-          paddingTop: 6,
+          paddingTop: 4,
         },
         tabBarLabelStyle: {
           fontSize: 11,
@@ -40,8 +43,8 @@ export default function ManufacturerLayout() {
           marginTop: 2,
         },
         headerRight: () => (
-          <TouchableOpacity onPress={logout} style={{ marginRight: 16, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: MFG.primaryFaint }}>
-            <Text style={{ fontSize: 13, fontWeight: '600', color: MFG.primary }}>Switch Role</Text>
+          <TouchableOpacity onPress={logout} style={{ marginRight: 16, paddingHorizontal: 14, paddingVertical: 6, borderRadius: 10, backgroundColor: R.accentBg }}>
+            <Text style={{ fontSize: 12, fontWeight: '700', color: R.accent, letterSpacing: 0.1 }}>Switch Role</Text>
           </TouchableOpacity>
         ),
       }}>

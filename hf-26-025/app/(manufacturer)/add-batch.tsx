@@ -4,7 +4,7 @@ import { BatchForm } from '@/components/manufacturer/add-batch/BatchForm';
 import { QRDisplay } from '@/components/manufacturer/add-batch/QRDisplay';
 import { TxReceipt } from '@/components/manufacturer/add-batch/TxReceipt';
 import { useBatch, BatchResult, BatchFormData } from '@/hooks/use-batch';
-import { MFG } from '@/constants/theme';
+import { HC } from '@/constants/theme';
 
 type Screen = 'form' | 'qr' | 'receipt';
 
@@ -29,7 +29,7 @@ export default function AddBatchScreen() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: MFG.bg }}>
+    <View style={{ flex: 1, backgroundColor: HC.bg }}>
       {view === 'form' && <BatchForm onSubmit={handleSubmit} loading={loading} />}
       {view === 'qr' && result && (
         <QRDisplay

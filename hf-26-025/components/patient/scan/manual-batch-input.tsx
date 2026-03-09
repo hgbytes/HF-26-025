@@ -37,20 +37,20 @@ export function ManualBatchInput({ onSubmit, loading }: Props) {
 
 const styles = StyleSheet.create({
   container: { marginTop: 20 },
-  label: { fontSize: 13, fontWeight: '600', color: '#687076', marginBottom: 8 },
+  label: { fontSize: 13, fontWeight: '600', color: '#64748b', marginBottom: 8 },
   row: { flexDirection: 'row', gap: 8 },
   input: {
     flex: 1,
     height: 48,
     borderWidth: 1,
-    borderColor: '#d0d5dd',
-    borderRadius: 10,
+    borderColor: '#e2e8f0',
+    borderRadius: 14,
     paddingHorizontal: 14,
     fontSize: 14,
-    backgroundColor: '#f9fafb',
-    color: '#11181C',
+    backgroundColor: '#f8fafc',
+    color: '#0f172a',
   },
-  btn: { backgroundColor: '#0a7ea4', borderRadius: 10, paddingHorizontal: 20, justifyContent: 'center' },
+  btn: { backgroundColor: '#0891b2', borderRadius: 14, paddingHorizontal: 20, justifyContent: 'center' },
   btnDisabled: { opacity: 0.5 },
   btnText: { color: '#fff', fontWeight: '700', fontSize: 14 },
 });

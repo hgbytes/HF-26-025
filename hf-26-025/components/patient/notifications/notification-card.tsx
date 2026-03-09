@@ -9,11 +9,11 @@ interface Props {
 }
 
 const ICON_MAP: Record<NotificationType, string> = {
-  stock_alert: '🔴',
-  low_stock: '🟡',
-  stock_restored: '🟢',
-  refill_reminder: '💊',
-  verify_log: '🔍',
+  stock_alert: '!!',
+  low_stock: '!',
+  stock_restored: 'OK',
+  refill_reminder: 'Rx',
+  verify_log: 'V',
 };
 
 export function NotificationCard({ item, onPress, onAction }: Props) {
@@ -46,16 +46,16 @@ export function NotificationCard({ item, onPress, onAction }: Props) {
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1 },
-  unread: { backgroundColor: '#f0f9ff', borderLeftWidth: 3, borderLeftColor: '#0a7ea4' },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#f1f5f9', shadowColor: '#94a3b8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  unread: { backgroundColor: '#ecfeff', borderLeftWidth: 3, borderLeftColor: '#059669' },
   row: { flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
-  icon: { fontSize: 20, marginTop: 2 },
+  icon: { fontSize: 11, fontWeight: '800', color: '#0891b2', backgroundColor: '#ecfeff', width: 28, height: 28, borderRadius: 14, textAlign: 'center', lineHeight: 28, overflow: 'hidden', marginTop: 2 },
   content: { flex: 1 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  title: { fontSize: 15, fontWeight: '700', color: '#11181C' },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#0a7ea4' },
-  desc: { fontSize: 13, color: '#687076', lineHeight: 18, marginBottom: 6 },
+  title: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#0891b2' },
+  desc: { fontSize: 13, color: '#64748b', lineHeight: 18, marginBottom: 6 },
   footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  time: { fontSize: 12, color: '#9BA1A6' },
-  action: { fontSize: 13, fontWeight: '600', color: '#0a7ea4' },
+  time: { fontSize: 12, color: '#94a3b8' },
+  action: { fontSize: 13, fontWeight: '600', color: '#059669' },
 });

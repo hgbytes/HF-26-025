@@ -9,10 +9,10 @@ interface Props {
 }
 
 const BADGE_MAP: Record<StockBadge, { label: string; color: string; bg: string }> = {
-  in_stock: { label: '🟢 In Stock', color: '#16a34a', bg: '#f0fdf4' },
-  low: { label: '🟡 Low Stock', color: '#ca8a04', bg: '#fefce8' },
-  critical: { label: '🔴 Critical', color: '#dc2626', bg: '#fef2f2' },
-  unavailable: { label: '⚫ Unavailable', color: '#64748b', bg: '#f1f5f9' },
+  in_stock: { label: 'In Stock', color: '#059669', bg: '#ecfdf5' },
+  low: { label: 'Low Stock', color: '#d97706', bg: '#fffbeb' },
+  critical: { label: 'Critical', color: '#dc2626', bg: '#fef2f2' },
+  unavailable: { label: 'Unavailable', color: '#64748b', bg: '#f1f5f9' },
 };
 
 export function PrescriptionCard({ item, onPress }: Props) {
@@ -35,8 +35,8 @@ export function PrescriptionCard({ item, onPress }: Props) {
       </View>
 
       <View style={styles.info}>
-        <ThemedText style={styles.infoText}>👨‍⚕️ {item.doctor}</ThemedText>
-        <ThemedText style={styles.infoText}>📅 {item.prescribedDate}</ThemedText>
+        <ThemedText style={styles.infoText}>Dr. {item.doctor}</ThemedText>
+        <ThemedText style={styles.infoText}>{item.prescribedDate}</ThemedText>
       </View>
 
       <View style={styles.refillRow}>
@@ -59,20 +59,20 @@ export function PrescriptionCard({ item, onPress }: Props) {
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#f1f5f9', shadowColor: '#94a3b8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 },
-  drug: { fontSize: 16, fontWeight: '700', color: '#11181C' },
-  dosage: { fontSize: 13, color: '#687076', marginTop: 2 },
-  statusTag: { borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3 },
+  drug: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
+  dosage: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  statusTag: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 3 },
   statusText: { fontSize: 12, fontWeight: '600' },
   info: { flexDirection: 'row', gap: 16, marginBottom: 10 },
-  infoText: { fontSize: 13, color: '#687076' },
+  infoText: { fontSize: 13, color: '#64748b' },
   refillRow: { marginBottom: 10 },
-  refillLabel: { fontSize: 13, color: '#687076', marginBottom: 4 },
+  refillLabel: { fontSize: 13, color: '#64748b', marginBottom: 4 },
   progressBg: { height: 6, backgroundColor: '#e2e8f0', borderRadius: 3 },
-  progressFill: { height: 6, backgroundColor: '#0a7ea4', borderRadius: 3 },
+  progressFill: { height: 6, backgroundColor: '#0891b2', borderRadius: 3 },
   footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  badge: { borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3 },
+  badge: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 3 },
   badgeText: { fontSize: 12, fontWeight: '600' },
-  nextRefill: { fontSize: 12, color: '#687076' },
+  nextRefill: { fontSize: 12, color: '#059669' },
 });

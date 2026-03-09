@@ -6,7 +6,8 @@ import { StockTable } from '@/components/manufacturer/distributors/StockTable';
 import { DemandSupplyChart } from '@/components/manufacturer/distributors/DemandSupplyChart';
 import { TransferRow } from '@/components/manufacturer/distributors/TransferRow';
 import { useDistributors } from '@/hooks/use-distributors';
-import { MFG, CardShadow } from '@/constants/theme';
+import { HC, CardShadow } from '@/constants/theme';
+const MFG = HC;
 
 type Filter = 'all' | 'low' | 'critical' | 'inactive';
 const FILTERS: { key: Filter; label: string }[] = [

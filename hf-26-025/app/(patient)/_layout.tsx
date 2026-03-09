@@ -1,24 +1,50 @@
 import { Tabs } from 'expo-router';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { TouchableOpacity, Text } from 'react-native';
+import { HC, RoleColors } from '@/constants/theme';
+import { Platform, TouchableOpacity, Text } from 'react-native';
 import { useAuth } from '@/contexts/auth-context';
 
+const R = RoleColors.patient;
+
 export default function PatientLayout() {
-  const colorScheme = useColorScheme();
   const { logout } = useAuth();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: R.accent,
+        tabBarInactiveTintColor: HC.textMuted,
         headerShown: true,
+        headerStyle: {
+          backgroundColor: HC.card,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 1,
+          borderBottomColor: HC.borderLight,
+        },
+        headerTitleStyle: {
+          fontWeight: '700',
+          fontSize: 17,
+          color: HC.text,
+          letterSpacing: -0.2,
+        },
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          backgroundColor: HC.card,
+          borderTopWidth: 1,
+          borderTopColor: HC.borderLight,
+          height: Platform.OS === 'ios' ? 88 : 64,
+          paddingTop: 4,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '600',
+          marginTop: 2,
+        },
         headerRight: () => (
-          <TouchableOpacity onPress={logout} style={{ marginRight: 16, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: '#e0f2fe' }}>
-            <Text style={{ fontSize: 13, fontWeight: '600', color: '#0a7ea4' }}>Switch Role</Text>
+          <TouchableOpacity onPress={logout} style={{ marginRight: 16, paddingHorizontal: 14, paddingVertical: 6, borderRadius: 10, backgroundColor: R.accentBg }}>
+            <Text style={{ fontSize: 12, fontWeight: '700', color: R.accent, letterSpacing: 0.1 }}>Switch Role</Text>
           </TouchableOpacity>
         ),
       }}>

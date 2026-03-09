@@ -81,6 +81,25 @@ export function useScan() {
         setScanResult(r); setState('result'); return r;
       }
 
+  /** Parse QR data (JSON string from manufacturer QR) and verify the batch */
+  const verifyFromQR = useCallback(async (rawData: string): Promise<ScanResult> => {
+    let batchId: string;
+    try {
+      const parsed = JSON.parse(rawData);
+      batchId = parsed.batchId || rawData;
+    } catch {
+      // Not JSON — treat the raw string as a batch ID
+      batchId = rawData.trim();
+    }
+    return verifyBatch(batchId);
+  }, [verifyBatch]);
+
+  const resetScan = useCallback(() => {
+    setState('scanning');
+    setScanResult(null);
+  }, []);
+
+  return { state, scanResult, verifyBatch, verifyFromQR, resetScan };
       const r: ScanResult = {
         result: 'authentic', drug: v.drugName, batchId,
         manufacturer: v.ownerName || v.currentOwner, manufacturerVerified: v.isValid,

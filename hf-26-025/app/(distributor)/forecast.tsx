@@ -114,7 +114,7 @@ export default function ForecastScreen() {
                 <ThemedText style={[styles.trendLabel, { color: f.trend === 'rising' ? '#dc2626' : f.trend === 'declining' ? '#0a7ea4' : '#16a34a' }]}>
                   {f.trend === 'rising' ? '↑' : f.trend === 'declining' ? '↓' : '→'} {f.trend}
                 </ThemedText>
-                {f.needsReorder && <ThemedText style={styles.reorderFlag}>⚠ Reorder</ThemedText>}
+                {f.needsReorder && <ThemedText style={styles.reorderFlag}>Reorder</ThemedText>}
               </View>
             </TouchableOpacity>
           ))}
@@ -128,15 +128,15 @@ export default function ForecastScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scroll: { padding: 20, paddingBottom: 40 },
-  title: { marginBottom: 16 },
-  backLink: { color: '#0a7ea4', fontSize: 15, fontWeight: '600', marginBottom: 16 },
-  sectionTitle: { marginTop: 24, marginBottom: 12 },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  scroll: { padding: 20, paddingBottom: 48 },
+  title: { marginBottom: 16, color: '#0f172a', letterSpacing: -0.3 },
+  backLink: { color: '#7c3aed', fontSize: 14, fontWeight: '600', marginBottom: 16 },
+  sectionTitle: { marginTop: 24, marginBottom: 12, color: '#0f172a', letterSpacing: -0.2 },
   horizonRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
-  horizonChip: { paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f3f4f6' },
-  horizonActive: { backgroundColor: '#0a7ea4' },
-  horizonText: { fontSize: 14, fontWeight: '600', color: '#687076' },
+  horizonChip: { paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', borderWidth: 1, borderColor: '#e2e8f0' },
+  horizonActive: { backgroundColor: '#7c3aed', borderColor: '#7c3aed' },
+  horizonText: { fontSize: 13, fontWeight: '600', color: '#64748b' },
   horizonTextActive: { color: '#fff' },
   list: { gap: 12 },
   drugRow: {
@@ -144,21 +144,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
-  drugName: { fontSize: 15, fontWeight: '700', color: '#11181C' },
-  stockText: { fontSize: 13, color: '#687076', marginTop: 2 },
+  drugName: { fontSize: 14, fontWeight: '700', color: '#0f172a' },
+  stockText: { fontSize: 12, color: '#64748b', marginTop: 2 },
   drugRight: { alignItems: 'flex-end' },
-  trendLabel: { fontSize: 13, fontWeight: '600' },
-  reorderFlag: { fontSize: 12, color: '#dc2626', marginTop: 2 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f3f3f3' },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C' },
+  trendLabel: { fontSize: 12, fontWeight: '600' },
+  reorderFlag: { fontSize: 10, fontWeight: '700', color: '#fff', backgroundColor: '#dc2626', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, marginTop: 4, overflow: 'hidden' },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#f1f5f9', shadowColor: '#94a3b8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
 });

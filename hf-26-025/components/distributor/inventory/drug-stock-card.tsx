@@ -12,8 +12,8 @@ interface Props {
 }
 
 const STATUS_CONFIG: Record<StockStatus, { color: string; bg: string; label: string }> = {
-  ok: { color: '#16a34a', bg: '#f0fdf4', label: 'OK' },
-  low: { color: '#ca8a04', bg: '#fefce8', label: 'Low' },
+  ok: { color: '#059669', bg: '#ecfdf5', label: 'OK' },
+  low: { color: '#d97706', bg: '#fffbeb', label: 'Low' },
   critical: { color: '#dc2626', bg: '#fef2f2', label: 'Critical' },
 };
 
@@ -47,20 +47,22 @@ export function DrugStockCard({ drug, drugCode, totalQuantity, status, batchCoun
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
     borderLeftWidth: 4,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  drugName: { fontSize: 17, fontWeight: '700', color: '#11181C' },
-  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 12 },
+  drugName: { fontSize: 16, fontWeight: '700', color: '#0f172a' },
+  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 10 },
   badgeText: { fontSize: 12, fontWeight: '600' },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4 },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
 });

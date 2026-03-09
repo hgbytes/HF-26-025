@@ -12,8 +12,8 @@ export function ForecastTrendChart({ item }: Props) {
 
   const TREND_CONFIG: Record<string, { color: string; label: string }> = {
     rising: { color: '#dc2626', label: '↑ Rising' },
-    stable: { color: '#16a34a', label: '→ Stable' },
-    declining: { color: '#0a7ea4', label: '↓ Declining' },
+    stable: { color: '#059669', label: '→ Stable' },
+    declining: { color: '#0891b2', label: '↓ Declining' },
   };
 
   const trend = TREND_CONFIG[item.trend];
@@ -26,7 +26,7 @@ export function ForecastTrendChart({ item }: Props) {
       </View>
       <View style={styles.chartRow}>
         <View style={styles.barCol}>
-          <View style={[styles.bar, { height: barHeight(item.currentStock), backgroundColor: '#0a7ea4' }]} />
+          <View style={[styles.bar, { height: barHeight(item.currentStock), backgroundColor: '#0891b2' }]} />
           <ThemedText style={styles.barLabel}>Now</ThemedText>
           <ThemedText style={styles.barValue}>{item.currentStock.toLocaleString()}</ThemedText>
         </View>
@@ -53,20 +53,22 @@ export function ForecastTrendChart({ item }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  title: { fontSize: 16, fontWeight: '700', color: '#11181C' },
+  title: { fontSize: 15, fontWeight: '700', color: '#0f172a' },
   trendBadge: { fontSize: 13, fontWeight: '600' },
   chartRow: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 160, paddingTop: 20 },
   barCol: { alignItems: 'center', gap: 4 },
   bar: { width: 36, borderRadius: 6 },
-  barLabel: { fontSize: 12, color: '#687076', fontWeight: '600' },
-  barValue: { fontSize: 11, color: '#11181C' },
+  barLabel: { fontSize: 12, color: '#64748b', fontWeight: '600' },
+  barValue: { fontSize: 11, color: '#0f172a' },
 });

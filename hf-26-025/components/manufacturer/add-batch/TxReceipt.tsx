@@ -1,6 +1,7 @@
 import { StyleSheet, View, ScrollView, TouchableOpacity, Clipboard } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import { MFG, CardShadow } from '@/constants/theme';
+import { HC, CardShadow } from '@/constants/theme';
+const MFG = HC;
 import { BatchResult } from '@/hooks/use-batch';
 
 interface Props {

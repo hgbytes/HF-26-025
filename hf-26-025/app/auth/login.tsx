@@ -2,11 +2,12 @@ import { StyleSheet, TouchableOpacity, View, Image, StatusBar } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemedText } from '@/components/themed-text';
 import { useAuth, UserRole } from '@/contexts/auth-context';
+import { HC, RoleColors, CardShadow } from '@/constants/theme';
 
-const ROLES: { key: UserRole; label: string; icon: string; desc: string; accent: string }[] = [
-  { key: 'manufacturer', label: 'Manufacturer', icon: '🏭', desc: 'Register batches & manage supply', accent: '#0a7ea4' },
-  { key: 'distributor', label: 'Distributor', icon: '🚚', desc: 'Track inventory & transfers', accent: '#7c3aed' },
-  { key: 'patient', label: 'Patient', icon: '🧑‍⚕️', desc: 'Verify drugs & prescriptions', accent: '#10b981' },
+const ROLES: { key: UserRole; label: string; initial: string; desc: string }[] = [
+  { key: 'manufacturer', label: 'Manufacturer', initial: 'M', desc: 'Register batches & manage supply' },
+  { key: 'distributor', label: 'Distributor', initial: 'D', desc: 'Track inventory & transfers' },
+  { key: 'patient', label: 'Patient', initial: 'P', desc: 'Verify drugs & prescriptions' },
 ];
 
 export default function LoginScreen() {
@@ -16,44 +17,54 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
 
-      {/* Gradient header */}
-      <LinearGradient colors={['#0a7ea4', '#06b6d4']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.headerGradient}>
-        <Image
-          source={require('@/assets/images/medchain-logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+      <LinearGradient colors={['#0e7490', '#0891b2', '#06b6d4']} start={{ x: 0, y: 0 }} end={{ x: 0.5, y: 1 }} style={styles.headerGradient}>
+        <View style={styles.logoWrap}>
+          <Image
+            source={require('@/assets/images/medchain-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
         <ThemedText style={styles.brand}>MedChain TN</ThemedText>
-        <ThemedText style={styles.subtitle}>Healthcare Supply Chain Management</ThemedText>
+        <ThemedText style={styles.subtitle}>Healthcare Supply Chain Platform</ThemedText>
         <View style={styles.tagline}>
-          <ThemedText style={styles.tagText}>Blockchain-Powered · AI-Driven · Secure</ThemedText>
+          <View style={styles.tagDot} />
+          <ThemedText style={styles.tagText}>Blockchain-Powered</ThemedText>
+          <View style={styles.tagSep} />
+          <View style={styles.tagDot} />
+          <ThemedText style={styles.tagText}>AI-Driven</ThemedText>
+          <View style={styles.tagSep} />
+          <View style={styles.tagDot} />
+          <ThemedText style={styles.tagText}>Secure</ThemedText>
         </View>
       </LinearGradient>
 
-      {/* Curved white body */}
       <View style={styles.body}>
-        <ThemedText style={styles.prompt}>Select your role</ThemedText>
+        <ThemedText style={styles.prompt}>Continue as</ThemedText>
 
         <View style={styles.roles}>
-          {ROLES.map((r) => (
-            <TouchableOpacity
-              key={r.key}
-              style={styles.roleCard}
-              onPress={() => selectRole(r.key)}
-              activeOpacity={0.75}
-            >
-              <View style={[styles.roleIconWrap, { backgroundColor: r.accent + '14' }]}>
-                <ThemedText style={styles.roleIcon}>{r.icon}</ThemedText>
-              </View>
-              <View style={styles.roleInfo}>
-                <ThemedText style={[styles.roleLabel, { color: r.accent }]}>{r.label}</ThemedText>
-                <ThemedText style={styles.roleDesc}>{r.desc}</ThemedText>
-              </View>
-              <View style={[styles.arrow, { backgroundColor: r.accent + '12' }]}>
-                <ThemedText style={[styles.arrowText, { color: r.accent }]}>→</ThemedText>
-              </View>
-            </TouchableOpacity>
-          ))}
+          {ROLES.map((r) => {
+            const rc = RoleColors[r.key];
+            return (
+              <TouchableOpacity
+                key={r.key}
+                style={styles.roleCard}
+                onPress={() => selectRole(r.key)}
+                activeOpacity={0.6}
+              >
+                <LinearGradient colors={[...rc.gradient]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.roleIconWrap}>
+                  <ThemedText style={styles.roleIcon}>{r.initial}</ThemedText>
+                </LinearGradient>
+                <View style={styles.roleInfo}>
+                  <ThemedText style={styles.roleLabel}>{r.label}</ThemedText>
+                  <ThemedText style={styles.roleDesc}>{r.desc}</ThemedText>
+                </View>
+                <View style={styles.arrow}>
+                  <ThemedText style={styles.arrowText}>›</ThemedText>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
         </View>
 
         <ThemedText style={styles.footer}>v1.0.0 · Tamil Nadu Health Authority</ThemedText>
@@ -63,114 +74,105 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0a7ea4' },
+  container: { flex: 1, backgroundColor: '#0e7490' },
 
-  // ── Gradient Header ──
   headerGradient: {
-    paddingTop: 60,
-    paddingBottom: 40,
+    paddingTop: 64,
+    paddingBottom: 48,
     alignItems: 'center',
   },
-  logo: {
-    width: 90,
-    height: 90,
-    marginBottom: 14,
-    borderRadius: 22,
+  logoWrap: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
   },
+  logo: { width: 56, height: 56, borderRadius: 16 },
   brand: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: '800',
     color: '#ffffff',
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 6,
+    color: 'rgba(255,255,255,0.75)',
+    marginTop: 4,
     fontWeight: '500',
   },
   tagline: {
-    marginTop: 14,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    backgroundColor: 'rgba(255,255,255,0.1)',
     paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 20,
+    paddingVertical: 8,
+    borderRadius: HC.radiusFull,
   },
-  tagText: {
-    fontSize: 11,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: '600',
-    letterSpacing: 0.3,
-  },
+  tagDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.5)' },
+  tagText: { fontSize: 11, color: 'rgba(255,255,255,0.85)', fontWeight: '600', marginLeft: 6 },
+  tagSep: { width: 12 },
 
-  // ── Body ──
   body: {
     flex: 1,
-    backgroundColor: '#f8fafc',
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    marginTop: -16,
+    backgroundColor: HC.bg,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    marginTop: -20,
     paddingHorizontal: 24,
-    paddingTop: 30,
+    paddingTop: 32,
   },
   prompt: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
-    color: '#0f172a',
+    color: HC.text,
     marginBottom: 20,
-    textAlign: 'center',
+    letterSpacing: -0.2,
   },
 
-  // ── Role Cards ──
-  roles: { gap: 14 },
+  roles: { gap: 12 },
   roleCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 18,
-    borderRadius: 16,
-    backgroundColor: '#ffffff',
-    shadowColor: '#64748b',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 3,
+    padding: 16,
+    borderRadius: HC.radius,
+    backgroundColor: HC.card,
+    borderWidth: 1,
+    borderColor: HC.borderLight,
+    ...CardShadow,
   },
   roleIconWrap: {
-    width: 50,
-    height: 50,
+    width: 48,
+    height: 48,
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
   },
-  roleIcon: { fontSize: 26 },
+  roleIcon: { fontSize: 20, fontWeight: '800', color: '#ffffff' },
   roleInfo: { flex: 1 },
-  roleLabel: {
-    fontSize: 17,
-    fontWeight: '700',
-  },
-  roleDesc: {
-    fontSize: 12,
-    color: '#94a3b8',
-    marginTop: 3,
-    fontWeight: '500',
-  },
+  roleLabel: { fontSize: 16, fontWeight: '700', color: HC.text },
+  roleDesc: { fontSize: 12, color: HC.textMuted, marginTop: 2, fontWeight: '500' },
   arrow: {
-    width: 34,
-    height: 34,
+    width: 32,
+    height: 32,
     borderRadius: 10,
+    backgroundColor: HC.borderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  arrowText: { fontSize: 18, fontWeight: '600' },
+  arrowText: { fontSize: 22, fontWeight: '400', color: HC.textMuted, marginTop: -2 },
 
-  // ── Footer ──
   footer: {
     textAlign: 'center',
     fontSize: 11,
-    color: '#94a3b8',
+    color: HC.textMuted,
     marginTop: 'auto' as any,
-    paddingBottom: 30,
+    paddingBottom: 32,
     fontWeight: '500',
+    letterSpacing: 0.2,
   },
 });

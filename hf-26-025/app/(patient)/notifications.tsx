@@ -72,7 +72,6 @@ export default function NotificationsScreen() {
 
         {notifications.length === 0 && (
           <View style={styles.empty}>
-            <ThemedText style={styles.emptyIcon}>🔔</ThemedText>
             <ThemedText style={styles.emptyText}>No notifications</ThemedText>
           </View>
         )}
@@ -82,19 +81,18 @@ export default function NotificationsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scroll: { padding: 16, paddingBottom: 40 },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  scroll: { padding: 20, paddingBottom: 48 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  markAll: { fontSize: 14, fontWeight: '600', color: '#0a7ea4' },
-  unreadBadge: { backgroundColor: '#dbeafe', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, alignSelf: 'flex-start', marginBottom: 12 },
-  unreadText: { fontSize: 13, fontWeight: '600', color: '#1d4ed8' },
+  markAll: { fontSize: 13, fontWeight: '600', color: '#059669' },
+  unreadBadge: { backgroundColor: '#ecfdf5', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 5, alignSelf: 'flex-start', marginBottom: 12, borderWidth: 1, borderColor: '#d1fae5' },
+  unreadText: { fontSize: 12, fontWeight: '700', color: '#059669' },
   chipRow: { flexDirection: 'row', marginBottom: 16 },
-  chip: { backgroundColor: '#f1f5f9', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 8 },
-  chipActive: { backgroundColor: '#0a7ea4' },
-  chipText: { fontSize: 14, fontWeight: '600', color: '#687076' },
+  chip: { backgroundColor: '#f1f5f9', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 8, borderWidth: 1, borderColor: '#e2e8f0' },
+  chipActive: { backgroundColor: '#059669', borderColor: '#059669' },
+  chipText: { fontSize: 13, fontWeight: '600', color: '#64748b' },
   chipTextActive: { color: '#fff' },
-  groupLabel: { fontSize: 13, fontWeight: '700', color: '#9BA1A6', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8, marginTop: 4 },
+  groupLabel: { fontSize: 11, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8, marginTop: 4 },
   empty: { alignItems: 'center', paddingVertical: 60 },
-  emptyIcon: { fontSize: 40, marginBottom: 12 },
-  emptyText: { fontSize: 16, color: '#687076' },
+  emptyText: { fontSize: 15, color: '#94a3b8' },
 });

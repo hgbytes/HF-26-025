@@ -109,7 +109,7 @@ export default function InventoryScreen() {
         {incoming.length > 0 && (
           <TouchableOpacity style={styles.incomingBanner} onPress={() => setView('incoming')} activeOpacity={0.7}>
             <ThemedText style={styles.incomingText}>
-              📦 {incoming.length} incoming shipment{incoming.length > 1 ? 's' : ''} pending
+              {incoming.length} incoming shipment{incoming.length > 1 ? 's' : ''} pending
             </ThemedText>
             <ThemedText style={styles.incomingArrow}>→</ThemedText>
           </TouchableOpacity>
@@ -134,31 +134,31 @@ export default function InventoryScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scroll: { padding: 20, paddingBottom: 40 },
-  title: { marginBottom: 16 },
-  subtitle: { fontSize: 14, color: '#687076', marginBottom: 16 },
-  backLink: { color: '#0a7ea4', fontSize: 15, fontWeight: '600', marginBottom: 16 },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  scroll: { padding: 20, paddingBottom: 48 },
+  title: { marginBottom: 16, color: '#0f172a', letterSpacing: -0.3 },
+  subtitle: { fontSize: 13, color: '#64748b', marginBottom: 16 },
+  backLink: { color: '#7c3aed', fontSize: 14, fontWeight: '600', marginBottom: 16 },
   filterRow: { flexDirection: 'row', gap: 8, marginTop: 16, marginBottom: 16 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f3f4f6' },
-  filterActive: { backgroundColor: '#0a7ea4' },
-  filterText: { fontSize: 13, fontWeight: '600', color: '#687076' },
+  filterChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#f1f5f9', borderWidth: 1, borderColor: '#e2e8f0' },
+  filterActive: { backgroundColor: '#7c3aed', borderColor: '#7c3aed' },
+  filterText: { fontSize: 12, fontWeight: '600', color: '#64748b' },
   filterTextActive: { color: '#fff' },
   incomingBanner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#e8f4f8',
-    borderRadius: 10,
+    backgroundColor: '#f5f3ff',
+    borderRadius: 14,
     padding: 14,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#bae6fd',
+    borderColor: '#ede9fe',
   },
-  incomingText: { fontSize: 14, fontWeight: '600', color: '#0369a1' },
-  incomingArrow: { fontSize: 16, color: '#0369a1', fontWeight: '700' },
+  incomingText: { fontSize: 13, fontWeight: '600', color: '#6d28d9' },
+  incomingArrow: { fontSize: 16, color: '#6d28d9', fontWeight: '700' },
   list: { gap: 12 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f3f3f3' },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C' },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
 });

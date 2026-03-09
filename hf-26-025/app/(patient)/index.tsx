@@ -12,10 +12,10 @@ import type { StockBadge, DrugDetail } from '@/hooks/use-drugs';
 type HomeView = 'drugList' | 'drugDetail';
 
 const BADGE_MAP: Record<StockBadge, { label: string; color: string }> = {
-  in_stock: { label: '🟢 In Stock', color: '#16a34a' },
-  low: { label: '🟡 Low Stock', color: '#ca8a04' },
-  critical: { label: '🔴 Critical', color: '#dc2626' },
-  unavailable: { label: '⚫ Unavailable', color: '#64748b' },
+  in_stock: { label: 'In Stock', color: '#16a34a' },
+  low: { label: 'Low Stock', color: '#ca8a04' },
+  critical: { label: 'Critical', color: '#dc2626' },
+  unavailable: { label: 'Unavailable', color: '#64748b' },
 };
 
 export default function PatientHomeScreen() {
@@ -121,15 +121,15 @@ export default function PatientHomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scroll: { padding: 16, paddingBottom: 40 },
-  title: { marginBottom: 12 },
-  backLink: { color: '#0a7ea4', fontSize: 15, fontWeight: '600', marginBottom: 12 },
-  badge: { fontSize: 16, fontWeight: '700', marginBottom: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C' },
-  sectionTitle: { marginBottom: 10 },
-  resultCount: { fontSize: 13, color: '#687076', marginBottom: 10 },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  scroll: { padding: 20, paddingBottom: 48 },
+  title: { marginBottom: 16, color: '#0f172a', letterSpacing: -0.3 },
+  backLink: { color: '#059669', fontSize: 14, fontWeight: '600', marginBottom: 12 },
+  badge: { fontSize: 15, fontWeight: '700', marginBottom: 16 },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: '#f1f5f9', shadowColor: '#94a3b8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
+  sectionTitle: { marginBottom: 10, color: '#0f172a', letterSpacing: -0.2 },
+  resultCount: { fontSize: 12, color: '#94a3b8', marginBottom: 12, fontWeight: '500' },
 });

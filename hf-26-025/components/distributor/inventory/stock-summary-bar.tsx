@@ -17,12 +17,12 @@ export function StockSummaryBar({ total, ok, low, critical }: Props) {
       </View>
       <View style={styles.divider} />
       <View style={styles.item}>
-        <ThemedText style={[styles.count, { color: '#16a34a' }]}>{ok}</ThemedText>
+        <ThemedText style={[styles.count, { color: '#059669' }]}>{ok}</ThemedText>
         <ThemedText style={styles.label}>OK</ThemedText>
       </View>
       <View style={styles.divider} />
       <View style={styles.item}>
-        <ThemedText style={[styles.count, { color: '#ca8a04' }]}>{low}</ThemedText>
+        <ThemedText style={[styles.count, { color: '#d97706' }]}>{low}</ThemedText>
         <ThemedText style={styles.label}>Low</ThemedText>
       </View>
       <View style={styles.divider} />
@@ -37,14 +37,14 @@ export function StockSummaryBar({ total, ok, low, critical }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#f9fafb',
-    borderRadius: 12,
+    backgroundColor: '#f8fafc',
+    borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#e2e8f0',
   },
   item: { flex: 1, alignItems: 'center' },
-  divider: { width: 1, backgroundColor: '#e5e7eb' },
-  count: { fontSize: 24, fontWeight: '700', color: '#11181C' },
-  label: { fontSize: 12, color: '#687076', marginTop: 2 },
+  divider: { width: 1, backgroundColor: '#e2e8f0' },
+  count: { fontSize: 22, fontWeight: '700', color: '#0f172a' },
+  label: { fontSize: 11, color: '#64748b', marginTop: 2 },
 });

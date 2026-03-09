@@ -4,7 +4,8 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { ThemedText } from '@/components/themed-text';
 import { Dropdown } from '@/components/shared/Dropdown';
 import { DRUGS, REGIONS, MOCK_DISTRIBUTORS } from '@/constants/medchain';
-import { MFG, CardShadow } from '@/constants/theme';
+import { HC, CardShadow } from '@/constants/theme';
+const MFG = HC;
 import { generateBatchId, BatchFormData } from '@/hooks/use-batch';
 
 interface Props {
@@ -156,7 +157,9 @@ function DateField({ label, value, onPress }: { label: string; value: Date | nul
         <ThemedText style={[fieldStyles.dateText, !value && fieldStyles.datePlaceholder]}>
           {display || 'Select date'}
         </ThemedText>
-        <ThemedText style={fieldStyles.calIcon}>📅</ThemedText>
+        <View style={fieldStyles.calIconWrap}>
+          <ThemedText style={fieldStyles.calIcon}>Cal</ThemedText>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -187,7 +190,8 @@ const fieldStyles = StyleSheet.create({
   },
   dateText: { fontSize: 15, color: MFG.text },
   datePlaceholder: { color: MFG.textMuted },
-  calIcon: { fontSize: 18 },
+  calIconWrap: { backgroundColor: '#ecfeff', borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4 },
+  calIcon: { fontSize: 11, fontWeight: '700', color: '#0891b2' },
 });
 
 const styles = StyleSheet.create({
@@ -202,7 +206,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#bae6fd',
+    borderColor: '#a5f3fc',
   },
   batchIdLabel: { fontSize: 11, fontWeight: '700', color: MFG.primary, textTransform: 'uppercase', letterSpacing: 1 },
   batchIdValue: { fontSize: 13, color: MFG.primaryDark, fontFamily: 'monospace', marginTop: 4 },

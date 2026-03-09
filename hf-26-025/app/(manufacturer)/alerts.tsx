@@ -6,7 +6,8 @@ import { ConfidenceBar } from '@/components/manufacturer/alerts/ConfidenceBar';
 import { FlaggedFeatureList } from '@/components/manufacturer/alerts/FlaggedFeatureList';
 import { ResolveForm } from '@/components/manufacturer/alerts/ResolveForm';
 import { useAlerts, AlertItem, ResolutionAction } from '@/hooks/use-alerts';
-import { MFG, CardShadow } from '@/constants/theme';
+import { HC, CardShadow } from '@/constants/theme';
+const MFG = HC;
 
 type ViewState =
   | { screen: 'feed' }

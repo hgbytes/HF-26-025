@@ -10,7 +10,7 @@ export function DrugSearchBar({ value, onChangeText }: Props) {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="🔍 Search medicines..."
+        placeholder="Search medicines..."
         placeholderTextColor="#999"
         value={value}
         onChangeText={onChangeText}
@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
   input: {
     height: 48,
     borderWidth: 1,
-    borderColor: '#d0d5dd',
-    borderRadius: 12,
+    borderColor: '#e2e8f0',
+    borderRadius: 14,
     paddingHorizontal: 16,
     fontSize: 15,
-    backgroundColor: '#f9fafb',
-    color: '#11181C',
+    backgroundColor: '#f8fafc',
+    color: '#0f172a',
   },
 });

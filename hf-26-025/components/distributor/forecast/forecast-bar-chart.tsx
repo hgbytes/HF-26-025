@@ -44,7 +44,7 @@ export function ForecastBarChart({ items, horizon }: Props) {
       })}
       <View style={styles.legend}>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: '#0a7ea4' }]} />
+          <View style={[styles.legendDot, { backgroundColor: '#0891b2' }]} />
           <ThemedText style={styles.legendText}>Current Stock</ThemedText>
         </View>
         <View style={styles.legendItem}>
@@ -59,27 +59,29 @@ export function ForecastBarChart({ items, horizon }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
-  title: { fontSize: 16, fontWeight: '700', color: '#11181C', marginBottom: 16 },
+  title: { fontSize: 15, fontWeight: '700', color: '#0f172a', marginBottom: 16 },
   row: { marginBottom: 14 },
-  drugLabel: { fontSize: 13, fontWeight: '600', color: '#11181C', marginBottom: 4 },
+  drugLabel: { fontSize: 13, fontWeight: '600', color: '#0f172a', marginBottom: 4 },
   barContainer: { gap: 2 },
   barGroup: { gap: 3 },
   bar: { height: 10, borderRadius: 5, minWidth: 4 },
-  stockBar: { backgroundColor: '#0a7ea4' },
+  stockBar: { backgroundColor: '#0891b2' },
   demandBar: { backgroundColor: '#94a3b8' },
   demandBarDanger: { backgroundColor: '#dc2626' },
   values: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 2 },
-  valText: { fontSize: 11, color: '#687076' },
-  legend: { flexDirection: 'row', justifyContent: 'center', gap: 20, marginTop: 8, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#f3f3f3' },
+  valText: { fontSize: 11, color: '#64748b' },
+  legend: { flexDirection: 'row', justifyContent: 'center', gap: 20, marginTop: 8, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9' },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   legendDot: { width: 10, height: 10, borderRadius: 5 },
-  legendText: { fontSize: 12, color: '#687076' },
+  legendText: { fontSize: 12, color: '#64748b' },
 });

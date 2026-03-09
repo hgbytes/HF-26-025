@@ -1,20 +1,22 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * MedChain TN – Premium Healthcare Design System
+ *
+ * Palette: soft whites, cool slate greys, blue-teal accents.
+ * Shadows are ultra-subtle. Radii are generous. Typography is crisp.
  */
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
+const tintColorLight = '#0891b2';
 const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: '#0f172a',
+    background: '#f8fafc',
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: '#64748b',
+    tabIconDefault: '#94a3b8',
     tabIconSelected: tintColorLight,
   },
   dark: {
@@ -27,36 +29,90 @@ export const Colors = {
   },
 };
 
-/** Manufacturer design tokens */
-export const MFG = {
-  primary:      '#0a7ea4',
-  primaryDark:  '#086f91',
-  primaryLight: '#e0f2fe',
-  primaryFaint: '#f0f9ff',
+/* ─── Shared Design Tokens ──────────────────────────────── */
+export const HC = {
+  /* Primary palette – blue-teal */
+  primary:      '#0891b2',
+  primaryDark:  '#0e7490',
+  primaryLight: '#cffafe',
+  primaryFaint: '#f0fdfa',
+  accent:       '#06b6d4',
+
+  /* Surfaces */
   bg:           '#f8fafc',
   card:         '#ffffff',
+  cardHover:    '#f1f5f9',
+
+  /* Borders */
   border:       '#e2e8f0',
   borderLight:  '#f1f5f9',
+  borderFocus:  '#0891b2',
+
+  /* Text hierarchy */
   text:         '#0f172a',
   textSecondary:'#475569',
   textMuted:    '#94a3b8',
-  success:      '#10b981',
+  textInverse:  '#ffffff',
+
+  /* Semantic */
+  success:      '#059669',
+  successLight: '#d1fae5',
   successBg:    '#ecfdf5',
-  warning:      '#f59e0b',
+  warning:      '#d97706',
+  warningLight: '#fef3c7',
   warningBg:    '#fffbeb',
-  danger:       '#ef4444',
+  danger:       '#dc2626',
+  dangerLight:  '#fee2e2',
   dangerBg:     '#fef2f2',
-  radius:       14,
+  info:         '#0284c7',
+  infoBg:       '#e0f2fe',
+
+  /* Radii */
+  radius:       16,
   radiusSm:     10,
-  radiusLg:     18,
+  radiusMd:     14,
+  radiusLg:     20,
+  radiusFull:   999,
+
+  /* Spacing scale */
+  sp1: 4,
+  sp2: 8,
+  sp3: 12,
+  sp4: 16,
+  sp5: 20,
+  sp6: 24,
+  sp8: 32,
 } as const;
 
+/* Backward-compatible alias */
+export const MFG = {
+  ...HC,
+  primaryFaint: HC.primaryFaint,
+  radiusLg:     HC.radiusLg,
+} as const;
+
+/* ─── Role Accent Colours ──────────────────────────────── */
+export const RoleColors = {
+  manufacturer: { accent: '#0891b2', accentBg: '#ecfeff', gradient: ['#0891b2', '#06b6d4'] as const },
+  distributor:  { accent: '#7c3aed', accentBg: '#f5f3ff', gradient: ['#7c3aed', '#a78bfa'] as const },
+  patient:      { accent: '#059669', accentBg: '#ecfdf5', gradient: ['#059669', '#34d399'] as const },
+} as const;
+
+/* ─── Elevation / Shadows ──────────────────────────────── */
 export const CardShadow = {
+  shadowColor: '#94a3b8',
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.06,
+  shadowRadius: 8,
+  elevation: 2,
+} as const;
+
+export const CardShadowMd = {
   shadowColor: '#64748b',
-  shadowOffset: { width: 0, height: 2 },
+  shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.08,
-  shadowRadius: 12,
-  elevation: 3,
+  shadowRadius: 16,
+  elevation: 4,
 } as const;
 
 export const Fonts = Platform.select({

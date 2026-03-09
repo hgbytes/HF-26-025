@@ -1,24 +1,21 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import type { StockBadge } from '@/hooks/use-drugs';
+import type { DrugListing } from '@/hooks/use-drugs';
 
 interface Props {
-  name: string;
-  form: string;
-  badge: StockBadge;
-  pharmacyCount: number;
-  price: number;
+  drug: DrugListing;
   onPress: () => void;
 }
 
-const BADGE_CONFIG: Record<StockBadge, { icon: string; label: string; color: string }> = {
-  in_stock: { icon: '🟢', label: 'In Stock', color: '#16a34a' },
-  low: { icon: '🟡', label: 'Low Stock', color: '#ca8a04' },
-  critical: { icon: '🔴', label: 'Critical Stock', color: '#dc2626' },
-  unavailable: { icon: '⚫', label: 'Unavailable', color: '#687076' },
+const BADGE_CONFIG: Record<string, { label: string; color: string }> = {
+  in_stock: { label: 'In Stock', color: '#059669' },
+  low: { label: 'Low Stock', color: '#d97706' },
+  critical: { label: 'Critical Stock', color: '#dc2626' },
+  unavailable: { label: 'Unavailable', color: '#64748b' },
 };
 
-export function DrugAvailabilityCard({ name, form, badge, pharmacyCount, price, onPress }: Props) {
+export function DrugAvailabilityCard({ drug, onPress }: Props) {
+  const { name, form, badge, pharmacyCount, price } = drug;
   const cfg = BADGE_CONFIG[badge];
 
   return (
@@ -29,14 +26,14 @@ export function DrugAvailabilityCard({ name, form, badge, pharmacyCount, price, 
       </View>
       <ThemedText style={styles.form}>{form}</ThemedText>
       <ThemedText style={[styles.badge, { color: cfg.color }]}>
-        {cfg.icon} {cfg.label}
+        {cfg.label}
       </ThemedText>
       {badge !== 'unavailable' && pharmacyCount > 0 ? (
         <ThemedText style={styles.pharmacies}>
           {pharmacyCount} pharmac{pharmacyCount === 1 ? 'y' : 'ies'} nearby
         </ThemedText>
       ) : badge === 'critical' ? (
-        <ThemedText style={styles.warning}>⚠️ Limited availability</ThemedText>
+        <ThemedText style={styles.warning}>Limited availability</ThemedText>
       ) : badge === 'unavailable' ? (
         <ThemedText style={styles.warning}>No stock available</ThemedText>
       ) : null}
@@ -48,20 +45,22 @@ export function DrugAvailabilityCard({ name, form, badge, pharmacyCount, price, 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  name: { fontSize: 17, fontWeight: '700', color: '#11181C' },
-  arrow: { fontSize: 18, color: '#687076' },
-  form: { fontSize: 14, color: '#687076', marginTop: 2 },
-  badge: { fontSize: 14, fontWeight: '600', marginTop: 6 },
-  pharmacies: { fontSize: 13, color: '#687076', marginTop: 2 },
-  warning: { fontSize: 13, color: '#dc2626', marginTop: 2 },
-  price: { fontSize: 13, color: '#687076', marginTop: 4 },
+  name: { fontSize: 16, fontWeight: '700', color: '#0f172a' },
+  arrow: { fontSize: 18, color: '#94a3b8' },
+  form: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  badge: { fontSize: 13, fontWeight: '600', marginTop: 6 },
+  pharmacies: { fontSize: 13, color: '#64748b', marginTop: 2 },
+  warning: { fontSize: 13, color: '#dc2626', fontWeight: '600', marginTop: 2 },
+  price: { fontSize: 13, color: '#64748b', marginTop: 4 },
 });

@@ -123,7 +123,7 @@ export default function TransfersScreen() {
         {pending.length > 0 && (
           <View style={styles.pendingBanner}>
             <ThemedText style={styles.pendingText}>
-              ⏳ {pending.length} pending transfer{pending.length > 1 ? 's' : ''}
+              {pending.length} pending transfer{pending.length > 1 ? 's' : ''}
             </ThemedText>
           </View>
         )}
@@ -161,29 +161,29 @@ export default function TransfersScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scroll: { padding: 20, paddingBottom: 40 },
-  title: { marginBottom: 16 },
-  backLink: { color: '#0a7ea4', fontSize: 15, fontWeight: '600', marginBottom: 16 },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  scroll: { padding: 20, paddingBottom: 48 },
+  title: { marginBottom: 16, color: '#0f172a', letterSpacing: -0.3 },
+  backLink: { color: '#7c3aed', fontSize: 14, fontWeight: '600', marginBottom: 16 },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  initiateBtn: { backgroundColor: '#0a7ea4', borderRadius: 8, paddingHorizontal: 16, paddingVertical: 8 },
-  initiateBtnText: { color: '#fff', fontWeight: '700', fontSize: 14 },
-  pendingBanner: { backgroundColor: '#fefce8', borderRadius: 10, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#fde68a' },
-  pendingText: { fontSize: 14, fontWeight: '600', color: '#92400e' },
+  initiateBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 },
+  initiateBtnText: { color: '#fff', fontWeight: '700', fontSize: 13 },
+  pendingBanner: { backgroundColor: '#fffbeb', borderRadius: 14, padding: 12, marginBottom: 12, borderWidth: 1, borderColor: '#fef3c7' },
+  pendingText: { fontSize: 13, fontWeight: '600', color: '#92400e' },
   filterRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f3f4f6' },
-  filterActive: { backgroundColor: '#0a7ea4' },
-  filterText: { fontSize: 13, fontWeight: '600', color: '#687076' },
+  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: '#f1f5f9', borderWidth: 1, borderColor: '#e2e8f0' },
+  filterActive: { backgroundColor: '#7c3aed', borderColor: '#7c3aed' },
+  filterText: { fontSize: 12, fontWeight: '600', color: '#64748b' },
   filterTextActive: { color: '#fff' },
   list: { gap: 12, marginTop: 8 },
-  empty: { textAlign: 'center', color: '#687076', marginTop: 40, fontSize: 15 },
-  detailCard: { backgroundColor: '#fff', borderRadius: 12, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f3f3f3' },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C', flexShrink: 1, textAlign: 'right' },
+  empty: { textAlign: 'center', color: '#94a3b8', marginTop: 40, fontSize: 14 },
+  detailCard: { backgroundColor: '#fff', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#f1f5f9', shadowColor: '#94a3b8', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a', flexShrink: 1, textAlign: 'right' },
   actions: { flexDirection: 'row', gap: 12, marginTop: 20 },
-  acceptBtn: { flex: 1, backgroundColor: '#16a34a', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
-  acceptText: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  rejectBtn: { flex: 1, backgroundColor: '#fef2f2', borderRadius: 10, paddingVertical: 14, alignItems: 'center', borderWidth: 1, borderColor: '#fecaca' },
-  rejectText: { color: '#dc2626', fontWeight: '700', fontSize: 15 },
+  acceptBtn: { flex: 1, backgroundColor: '#059669', borderRadius: 14, paddingVertical: 14, alignItems: 'center' },
+  acceptText: { color: '#fff', fontWeight: '700', fontSize: 14 },
+  rejectBtn: { flex: 1, backgroundColor: '#fef2f2', borderRadius: 14, paddingVertical: 14, alignItems: 'center', borderWidth: 1, borderColor: '#fee2e2' },
+  rejectText: { color: '#dc2626', fontWeight: '700', fontSize: 14 },
 });

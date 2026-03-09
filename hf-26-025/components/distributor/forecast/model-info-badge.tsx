@@ -36,14 +36,14 @@ export function ModelInfoBadge({ model }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f0f9ff',
-    borderRadius: 12,
+    backgroundColor: '#ecfeff',
+    borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#bae6fd',
+    borderColor: '#a5f3fc',
   },
-  title: { fontSize: 14, fontWeight: '700', color: '#0369a1', marginBottom: 10 },
+  title: { fontSize: 14, fontWeight: '700', color: '#0e7490', marginBottom: 10 },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3 },
-  label: { fontSize: 13, color: '#0c4a6e' },
-  value: { fontSize: 13, fontWeight: '600', color: '#0c4a6e' },
+  label: { fontSize: 13, color: '#155e75' },
+  value: { fontSize: 13, fontWeight: '600', color: '#155e75' },
 });

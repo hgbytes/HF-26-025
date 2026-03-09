@@ -8,10 +8,10 @@ interface Props {
 }
 
 const STATUS_CONFIG: Record<string, { color: string; bg: string; label: string }> = {
-  pending: { color: '#ca8a04', bg: '#fefce8', label: 'Pending' },
-  accepted: { color: '#16a34a', bg: '#f0fdf4', label: 'Accepted' },
+  pending: { color: '#d97706', bg: '#fffbeb', label: 'Pending' },
+  accepted: { color: '#059669', bg: '#ecfdf5', label: 'Accepted' },
   rejected: { color: '#dc2626', bg: '#fef2f2', label: 'Rejected' },
-  cancelled: { color: '#687076', bg: '#f3f4f6', label: 'Cancelled' },
+  cancelled: { color: '#64748b', bg: '#f1f5f9', label: 'Cancelled' },
 };
 
 export function TransferHistoryCard({ transfer, onPress }: Props) {
@@ -22,7 +22,7 @@ export function TransferHistoryCard({ transfer, onPress }: Props) {
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <View style={styles.header}>
         <View style={styles.directionBadge}>
-          <ThemedText style={[styles.directionText, { color: isIncoming ? '#16a34a' : '#0a7ea4' }]}>
+          <ThemedText style={[styles.directionText, { color: isIncoming ? '#059669' : '#0891b2' }]}>
             {isIncoming ? '↓ IN' : '↑ OUT'}
           </ThemedText>
         </View>
@@ -50,21 +50,23 @@ export function TransferHistoryCard({ transfer, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    shadowColor: '#94a3b8',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 2,
   },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   directionBadge: { paddingHorizontal: 8, paddingVertical: 2 },
   directionText: { fontSize: 13, fontWeight: '700' },
-  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 12 },
+  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 10 },
   badgeText: { fontSize: 12, fontWeight: '600' },
-  drug: { fontSize: 17, fontWeight: '700', color: '#11181C', marginBottom: 8 },
+  drug: { fontSize: 16, fontWeight: '700', color: '#0f172a', marginBottom: 8 },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3 },
-  label: { fontSize: 14, color: '#687076' },
-  value: { fontSize: 14, fontWeight: '600', color: '#11181C' },
+  label: { fontSize: 13, color: '#64748b' },
+  value: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
 });

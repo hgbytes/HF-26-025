@@ -28,13 +28,13 @@ export function TxHashBadge({ hash, blockNumber }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f8fafc',
-    borderRadius: 8,
+    borderRadius: 12,
     padding: 10,
     borderWidth: 1,
     borderColor: '#e2e8f0',
   },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 2 },
-  label: { fontSize: 12, color: '#687076' },
-  hash: { fontSize: 12, fontWeight: '600', color: '#0a7ea4', fontFamily: 'monospace' },
-  block: { fontSize: 12, fontWeight: '600', color: '#11181C' },
+  label: { fontSize: 12, color: '#64748b' },
+  hash: { fontSize: 12, fontWeight: '600', color: '#0891b2', fontFamily: 'monospace' },
+  block: { fontSize: 12, fontWeight: '600', color: '#0f172a' },
 });

@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import { MFG } from '@/constants/theme';
+import { HC } from '@/constants/theme';
+const MFG = HC;
 import { TransferRecord } from '@/hooks/use-distributors';
 
 interface Props {

@@ -9,12 +9,16 @@ import { InvalidCard } from '@/components/patient/scan/invalid-card';
 import { useScan } from '@/hooks/use-scan';
 
 export default function ScanQRScreen() {
-  const { state, scanResult, verifyBatch, resetScan } = useScan();
+  const { state, scanResult, verifyBatch, verifyFromQR, resetScan } = useScan();
+
+  const handleQRScanned = (data: string) => {
+    verifyFromQR(data);
+  };
 
   if (state === 'loading') {
     return (
       <ThemedView style={styles.center}>
-        <ActivityIndicator size="large" color="#0a7ea4" />
+        <ActivityIndicator size="large" color="#0891b2" />
         <ThemedText style={styles.loadingText}>Verifying on blockchain...</ThemedText>
       </ThemedView>
     );
@@ -56,7 +60,7 @@ export default function ScanQRScreen() {
         <ThemedText type="title" style={styles.title}>Scan QR Code</ThemedText>
         <ThemedText style={styles.subtitle}>Verify drug authenticity via blockchain</ThemedText>
 
-        <ScanViewfinder />
+        <ScanViewfinder onScanned={handleQRScanned} />
 
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
@@ -71,13 +75,13 @@ export default function ScanQRScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
-  scroll: { padding: 16, paddingBottom: 40 },
-  title: { marginBottom: 4 },
-  subtitle: { fontSize: 14, color: '#687076', marginBottom: 20 },
-  loadingText: { fontSize: 15, color: '#687076', marginTop: 12 },
-  divider: { flexDirection: 'row', alignItems: 'center', marginVertical: 20 },
+  container: { flex: 1, backgroundColor: '#f8fafc' },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#f8fafc' },
+  scroll: { padding: 20, paddingBottom: 48 },
+  title: { marginBottom: 4, color: '#0f172a', letterSpacing: -0.3 },
+  subtitle: { fontSize: 13, color: '#64748b', marginBottom: 20 },
+  loadingText: { fontSize: 14, color: '#64748b', marginTop: 12 },
+  divider: { flexDirection: 'row', alignItems: 'center', marginVertical: 24 },
   dividerLine: { flex: 1, height: 1, backgroundColor: '#e2e8f0' },
-  dividerText: { fontSize: 13, color: '#9BA1A6', marginHorizontal: 12 },
+  dividerText: { fontSize: 12, color: '#94a3b8', marginHorizontal: 14, fontWeight: '500' },
 });

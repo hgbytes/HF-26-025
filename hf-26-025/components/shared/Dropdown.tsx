@@ -8,7 +8,8 @@ import {
   Pressable,
 } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import { MFG, CardShadow } from '@/constants/theme';
+import { HC, CardShadow } from '@/constants/theme';
+const MFG = HC;
 
 interface DropdownProps {
   label: string;
