@@ -12,7 +12,6 @@ interface Props {
 }
 
 const OPTIONS: { key: ResolutionAction; label: string; desc: string }[] = [
-  { key: 'investigated', label: 'Mark as Investigated', desc: 'No further action needed' },
   { key: 'escalate', label: 'Escalate to Authority', desc: 'Flag for regulatory review' },
   { key: 'false_positive', label: 'False Positive', desc: 'Dismiss — expected movement' },
 ];

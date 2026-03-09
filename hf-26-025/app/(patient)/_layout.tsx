@@ -63,17 +63,16 @@ export default function PatientLayout() {
         }}
       />
       <Tabs.Screen
-        name="prescriptions"
-        options={{
-          title: 'Prescriptions',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="list.clipboard.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="notifications"
         options={{
           title: 'Alerts',
           tabBarIcon: ({ color }) => <IconSymbol size={24} name="bell.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="prescriptions"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

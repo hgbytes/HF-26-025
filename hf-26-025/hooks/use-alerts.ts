@@ -21,7 +21,7 @@ export interface AlertItem {
   timeline: { time: string; event: string; flagged?: boolean }[];
 }
 
-export type ResolutionAction = 'investigated' | 'escalate' | 'false_positive';
+export type ResolutionAction = 'escalate' | 'false_positive';
 
 interface DbAlert {
   id: string;

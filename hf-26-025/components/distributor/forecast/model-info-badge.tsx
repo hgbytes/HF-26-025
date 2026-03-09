@@ -21,15 +21,15 @@ export function ModelInfoBadge({ model }: Props) {
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>Accuracy</ThemedText>
-        <ThemedText style={styles.value}>{(model.accuracy * 100).toFixed(0)}%</ThemedText>
+        <ThemedText style={styles.value}>{model.accuracy != null ? `${(model.accuracy * 100).toFixed(0)}%` : '—'}</ThemedText>
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>Last Trained</ThemedText>
-        <ThemedText style={styles.value}>{model.lastTrained}</ThemedText>
+        <ThemedText style={styles.value}>{model.lastTrained ?? '—'}</ThemedText>
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>Data Points</ThemedText>
-        <ThemedText style={styles.value}>{model.dataPoints.toLocaleString()}</ThemedText>
+        <ThemedText style={styles.value}>{model.dataPoints?.toLocaleString() ?? '—'}</ThemedText>
       </View>
     </View>
   );

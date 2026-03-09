@@ -121,11 +121,6 @@ export default function AlertsScreen() {
           {alert.status !== 'resolved' && (
             <View style={styles.actionBtns}>
               <TouchableOpacity
-                style={styles.outlineBtn}
-                onPress={() => setView({ screen: 'resolve', alertId: alert.id })}>
-                <ThemedText style={styles.outlineBtnText}>Investigate</ThemedText>
-              </TouchableOpacity>
-              <TouchableOpacity
                 style={styles.dangerBtn}
                 onPress={() => setView({ screen: 'resolve', alertId: alert.id })}>
                 <ThemedText style={styles.dangerBtnText}>Escalate</ThemedText>

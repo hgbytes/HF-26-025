@@ -6,7 +6,6 @@ import { ForecastBarChart } from '@/components/distributor/forecast/forecast-bar
 import { ReorderAlertCard } from '@/components/distributor/forecast/reorder-alert-card';
 import { ForecastTrendChart } from '@/components/distributor/forecast/forecast-trend-chart';
 import { SeasonalityNote } from '@/components/distributor/forecast/seasonality-note';
-import { ModelInfoBadge } from '@/components/distributor/forecast/model-info-badge';
 import { useForecast } from '@/hooks/use-forecast';
 
 type ForecastView = 'dashboard' | 'drugDetail';
@@ -120,8 +119,6 @@ export default function ForecastScreen() {
           ))}
         </View>
 
-        <View style={{ height: 16 }} />
-        {modelInfo && <ModelInfoBadge model={modelInfo} />}
       </ScrollView>
     </ThemedView>
   );
