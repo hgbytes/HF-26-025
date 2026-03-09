@@ -7,6 +7,7 @@ interface Props {
 }
 
 export function ModelInfoBadge({ model }: Props) {
+  if (!model) return null;
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>Model Info</ThemedText>

@@ -121,7 +121,7 @@ export default function ForecastScreen() {
         </View>
 
         <View style={{ height: 16 }} />
-        <ModelInfoBadge model={modelInfo} />
+        {modelInfo && <ModelInfoBadge model={modelInfo} />}
       </ScrollView>
     </ThemedView>
   );
