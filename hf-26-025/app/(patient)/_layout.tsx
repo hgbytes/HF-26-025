@@ -3,9 +3,12 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { TouchableOpacity, Text } from 'react-native';
+import { useAuth } from '@/contexts/auth-context';
 
 export default function PatientLayout() {
   const colorScheme = useColorScheme();
+  const { logout } = useAuth();
 
   return (
     <Tabs
@@ -13,6 +16,11 @@ export default function PatientLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: true,
         tabBarButton: HapticTab,
+        headerRight: () => (
+          <TouchableOpacity onPress={logout} style={{ marginRight: 16, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: '#e0f2fe' }}>
+            <Text style={{ fontSize: 13, fontWeight: '600', color: '#0a7ea4' }}>Switch Role</Text>
+          </TouchableOpacity>
+        ),
       }}>
       <Tabs.Screen
         name="index"

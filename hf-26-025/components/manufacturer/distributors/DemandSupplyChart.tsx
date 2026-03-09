@@ -1,24 +1,30 @@
 import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
+import { MFG } from '@/constants/theme';
 import { DemandSupplyItem } from '@/hooks/use-distributors';
 
 interface Props {
   data: DemandSupplyItem[];
 }
 
+const DEMAND_COLOR = '#f97316';
+
 export function DemandSupplyChart({ data }: Props) {
   const maxVal = Math.max(...data.flatMap((d) => [d.demand, d.supply]), 1);
 
   return (
     <View style={styles.container}>
-      <ThemedText style={styles.title}>Demand vs Supply (30 days)</ThemedText>
+      <View style={styles.headerRow}>
+        <ThemedText style={styles.title}>Demand vs Supply</ThemedText>
+        <ThemedText style={styles.subtitle}>30 days</ThemedText>
+      </View>
       <View style={styles.legend}>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: '#f97316' }]} />
+          <View style={[styles.legendDot, { backgroundColor: DEMAND_COLOR }]} />
           <ThemedText style={styles.legendText}>Demand</ThemedText>
         </View>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: '#0a7ea4' }]} />
+          <View style={[styles.legendDot, { backgroundColor: MFG.primary }]} />
           <ThemedText style={styles.legendText}>Supply</ThemedText>
         </View>
       </View>
@@ -30,17 +36,16 @@ export function DemandSupplyChart({ data }: Props) {
           <View key={i} style={styles.barGroup}>
             <ThemedText style={styles.drugLabel}>{item.drug}</ThemedText>
             <View style={styles.barRow}>
-              <View style={[styles.bar, { width: `${demandWidth}%`, backgroundColor: '#f97316' }]} />
+              <View style={styles.barBg}>
+                <View style={[styles.bar, { width: `${demandWidth}%`, backgroundColor: DEMAND_COLOR }]} />
+              </View>
               <ThemedText style={styles.barValue}>{item.demand.toLocaleString()}</ThemedText>
             </View>
             <View style={styles.barRow}>
-              <View
-                style={[
-                  styles.bar,
-                  { width: `${supplyWidth}%`, backgroundColor: gap ? '#ef4444' : '#0a7ea4' },
-                ]}
-              />
-              <ThemedText style={styles.barValue}>{item.supply.toLocaleString()}</ThemedText>
+              <View style={styles.barBg}>
+                <View style={[styles.bar, { width: `${supplyWidth}%`, backgroundColor: gap ? MFG.danger : MFG.primary }]} />
+              </View>
+              <ThemedText style={[styles.barValue, gap && { color: MFG.danger, fontWeight: '700' }]}>{item.supply.toLocaleString()}</ThemedText>
             </View>
           </View>
         );
@@ -51,14 +56,17 @@ export function DemandSupplyChart({ data }: Props) {
 
 const styles = StyleSheet.create({
   container: { gap: 12 },
-  title: { fontSize: 15, fontWeight: '700', color: '#333', marginBottom: 4 },
+  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+  title: { fontSize: 15, fontWeight: '700', color: MFG.text },
+  subtitle: { fontSize: 12, color: MFG.textMuted },
   legend: { flexDirection: 'row', gap: 20 },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   legendDot: { width: 10, height: 10, borderRadius: 5 },
-  legendText: { fontSize: 12, color: '#888' },
-  barGroup: { gap: 3, paddingVertical: 4, borderBottomWidth: 1, borderBottomColor: '#f3f3f3' },
-  drugLabel: { fontSize: 13, fontWeight: '600', color: '#555' },
-  barRow: { flexDirection: 'row', alignItems: 'center', height: 18, gap: 6 },
-  bar: { height: 14, borderRadius: 4, minWidth: 4 },
-  barValue: { fontSize: 11, color: '#888' },
+  legendText: { fontSize: 12, color: MFG.textMuted },
+  barGroup: { gap: 4, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: MFG.borderLight },
+  drugLabel: { fontSize: 13, fontWeight: '600', color: MFG.textSecondary },
+  barRow: { flexDirection: 'row', alignItems: 'center', height: 20, gap: 8 },
+  barBg: { flex: 1, height: 12, backgroundColor: MFG.borderLight, borderRadius: 6, overflow: 'hidden' },
+  bar: { height: '100%', borderRadius: 6, minWidth: 4 },
+  barValue: { fontSize: 11, color: MFG.textMuted, width: 48, textAlign: 'right' },
 });

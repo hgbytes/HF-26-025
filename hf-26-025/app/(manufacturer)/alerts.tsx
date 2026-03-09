@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { StyleSheet, ScrollView, View, TouchableOpacity, Alert } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { AlertCard } from '@/components/manufacturer/alerts/AlertCard';
 import { ConfidenceBar } from '@/components/manufacturer/alerts/ConfidenceBar';
 import { FlaggedFeatureList } from '@/components/manufacturer/alerts/FlaggedFeatureList';
 import { ResolveForm } from '@/components/manufacturer/alerts/ResolveForm';
 import { useAlerts, AlertItem, ResolutionAction } from '@/hooks/use-alerts';
+import { MFG, CardShadow } from '@/constants/theme';
 
 type ViewState =
   | { screen: 'feed' }
@@ -43,15 +43,15 @@ export default function AlertsScreen() {
     };
 
     return (
-      <ThemedView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.detailContainer}>
-          <TouchableOpacity onPress={() => setView({ screen: 'detail', alertId: alert.id })}>
-            <ThemedText style={styles.backLink}>← Back to Detail</ThemedText>
+      <View style={styles.screen}>
+        <ScrollView contentContainerStyle={styles.detailContainer} showsVerticalScrollIndicator={false}>
+          <TouchableOpacity onPress={() => setView({ screen: 'detail', alertId: alert.id })} style={styles.backBtn}>
+            <ThemedText style={styles.backText}>Back to Detail</ThemedText>
           </TouchableOpacity>
-          <ThemedText type="title" style={styles.heading}>Resolve Alert</ThemedText>
+          <ThemedText style={styles.heading}>Resolve Alert</ThemedText>
           <ResolveForm alert={alert} onResolve={handleResolve} loading={resolving} />
         </ScrollView>
-      </ThemedView>
+      </View>
     );
   }
 
@@ -60,54 +60,55 @@ export default function AlertsScreen() {
     const alert = getAlert(view.alertId);
     if (!alert) { setView({ screen: 'feed' }); return null; }
 
-    const severityColors: Record<string, string> = {
-      high: '#dc2626', medium: '#ca8a04', low: '#16a34a',
-    };
+    const sevColor: Record<string, string> = { high: MFG.danger, medium: MFG.warning, low: MFG.success };
+    const sevBg: Record<string, string> = { high: MFG.dangerBg, medium: MFG.warningBg, low: MFG.successBg };
 
     return (
-      <ThemedView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.detailContainer}>
-          <TouchableOpacity onPress={() => setView({ screen: 'feed' })}>
-            <ThemedText style={styles.backLink}>← Back to Alerts</ThemedText>
+      <View style={styles.screen}>
+        <ScrollView contentContainerStyle={styles.detailContainer} showsVerticalScrollIndicator={false}>
+          <TouchableOpacity onPress={() => setView({ screen: 'feed' })} style={styles.backBtn}>
+            <ThemedText style={styles.backText}>Back to Alerts</ThemedText>
           </TouchableOpacity>
 
-          <View style={styles.severityHeader}>
-            <ThemedText style={[styles.severityBadge, { color: severityColors[alert.severity] }]}>
-              {alert.severity === 'high' ? '🔴' : alert.severity === 'medium' ? '🟡' : '🟢'}{' '}
+          <View style={[styles.severityBanner, { backgroundColor: sevBg[alert.severity] }]}>
+            <View style={[styles.sevDot, { backgroundColor: sevColor[alert.severity] }]} />
+            <ThemedText style={[styles.sevLabel, { color: sevColor[alert.severity] }]}>
               {alert.severity.toUpperCase()} SEVERITY
             </ThemedText>
           </View>
-          <ThemedText type="title" style={styles.alertType}>{alert.type}</ThemedText>
 
-          <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>── Batch Info ──</ThemedText>
+          <ThemedText style={styles.alertType}>{alert.type}</ThemedText>
+
+          <View style={styles.sectionCard}>
+            <ThemedText style={styles.sectionLabel}>BATCH INFO</ThemedText>
             <InfoRow label="Batch ID" value={alert.batchId} />
             <InfoRow label="Drug" value={alert.drug} />
             <InfoRow label="Region" value={alert.region} />
             <InfoRow label="Distributor" value={alert.distributor} />
           </View>
 
-          <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>── Detection Details ──</ThemedText>
+          <View style={styles.sectionCard}>
+            <ThemedText style={styles.sectionLabel}>DETECTION</ThemedText>
             <ConfidenceBar score={alert.confidence} />
-            <View style={{ height: 12 }} />
+            <View style={{ height: 14 }} />
             <FlaggedFeatureList features={alert.flaggedFeatures} />
           </View>
 
-          <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>── Timeline ──</ThemedText>
+          <View style={styles.sectionCard}>
+            <ThemedText style={styles.sectionLabel}>TIMELINE</ThemedText>
             {alert.timeline.map((t, i) => (
               <View key={i} style={styles.timelineRow}>
                 <ThemedText style={styles.timelineTime}>{t.time}</ThemedText>
+                <View style={[styles.timelineDot, t.flagged && { backgroundColor: MFG.danger }]} />
                 <ThemedText style={[styles.timelineEvent, t.flagged && styles.timelineFlagged]}>
-                  {t.event}{t.flagged ? ' ← flag' : ''}
+                  {t.event}
                 </ThemedText>
               </View>
             ))}
           </View>
 
-          <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>── AI Recommendation ──</ThemedText>
+          <View style={styles.sectionCard}>
+            <ThemedText style={styles.sectionLabel}>AI RECOMMENDATION</ThemedText>
             <View style={styles.recoBox}>
               <ThemedText style={styles.recoAction}>
                 Action: {alert.confidence > 0.85 ? 'Escalate' : 'Monitor'}
@@ -119,26 +120,26 @@ export default function AlertsScreen() {
           {alert.status !== 'resolved' && (
             <View style={styles.actionBtns}>
               <TouchableOpacity
-                style={styles.actionBtn}
+                style={styles.outlineBtn}
                 onPress={() => setView({ screen: 'resolve', alertId: alert.id })}>
-                <ThemedText style={styles.actionBtnText}>Mark as Investigating</ThemedText>
+                <ThemedText style={styles.outlineBtnText}>Investigate</ThemedText>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.actionBtn, styles.escalateBtn]}
+                style={styles.dangerBtn}
                 onPress={() => setView({ screen: 'resolve', alertId: alert.id })}>
-                <ThemedText style={styles.escalateText}>Escalate</ThemedText>
+                <ThemedText style={styles.dangerBtnText}>Escalate</ThemedText>
               </TouchableOpacity>
             </View>
           )}
         </ScrollView>
-      </ThemedView>
+      </View>
     );
   }
 
   // ── Feed Screen ──
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.feedContainer}>
+    <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.feedContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.tabRow}>
           {TABS.map((t) => (
             <TouchableOpacity
@@ -161,11 +162,13 @@ export default function AlertsScreen() {
             />
           ))}
           {alerts.length === 0 && (
-            <ThemedText style={styles.empty}>No alerts match this filter.</ThemedText>
+            <View style={styles.emptyState}>
+              <ThemedText style={styles.emptyText}>No alerts match this filter.</ThemedText>
+            </View>
           )}
         </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 
@@ -179,64 +182,60 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 const styles = StyleSheet.create({
-  feedContainer: { padding: 16, paddingBottom: 40 },
-  tabRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
+  screen: { flex: 1, backgroundColor: MFG.bg },
+  feedContainer: { padding: 20, paddingBottom: 48 },
+  tabRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
   tab: {
-    paddingHorizontal: 18,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#d0d5dd',
-    backgroundColor: '#fff',
+    paddingHorizontal: 18, paddingVertical: 8, borderRadius: 20,
+    borderWidth: 1.5, borderColor: MFG.border, backgroundColor: MFG.card,
   },
-  tabActive: { backgroundColor: '#0a7ea4', borderColor: '#0a7ea4' },
-  tabText: { fontSize: 14, color: '#555' },
-  tabTextActive: { color: '#fff', fontWeight: '600' },
+  tabActive: { backgroundColor: MFG.primary, borderColor: MFG.primary },
+  tabText: { fontSize: 14, color: MFG.textSecondary, fontWeight: '500' },
+  tabTextActive: { color: '#fff', fontWeight: '700' },
   cardList: { gap: 12 },
-  empty: { textAlign: 'center', color: '#aaa', marginTop: 40, fontSize: 15 },
+  emptyState: { alignItems: 'center', marginTop: 60 },
+  emptyText: { color: MFG.textMuted, fontSize: 15 },
   // Detail
-  detailContainer: { padding: 16, paddingBottom: 40 },
-  backLink: { color: '#0a7ea4', fontSize: 15, fontWeight: '600', marginBottom: 12 },
-  heading: { fontSize: 22, color: '#0a7ea4', marginBottom: 16 },
-  severityHeader: { marginBottom: 4 },
-  severityBadge: { fontSize: 14, fontWeight: '700' },
-  alertType: { fontSize: 20, marginBottom: 12 },
-  section: { marginTop: 16, gap: 8 },
-  sectionTitle: { textAlign: 'center', color: '#888', fontSize: 13, marginBottom: 4 },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f3f3',
+  detailContainer: { padding: 20, paddingBottom: 48 },
+  backBtn: { marginBottom: 16 },
+  backText: { color: MFG.primary, fontSize: 15, fontWeight: '600' },
+  heading: { fontSize: 22, fontWeight: '800', color: MFG.text, letterSpacing: -0.3, marginBottom: 20 },
+  severityBanner: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    paddingHorizontal: 14, paddingVertical: 8, borderRadius: MFG.radiusSm, marginBottom: 10,
   },
-  infoLabel: { fontSize: 14, color: '#888' },
-  infoValue: { fontSize: 14, fontWeight: '600', maxWidth: '60%', textAlign: 'right' },
-  timelineRow: { flexDirection: 'row', gap: 12, paddingVertical: 4 },
-  timelineTime: { fontSize: 13, fontWeight: '600', color: '#555', width: 50 },
-  timelineEvent: { flex: 1, fontSize: 13, color: '#333' },
-  timelineFlagged: { color: '#dc2626', fontWeight: '700' },
+  sevDot: { width: 10, height: 10, borderRadius: 5 },
+  sevLabel: { fontSize: 13, fontWeight: '800', letterSpacing: 0.5 },
+  alertType: { fontSize: 22, fontWeight: '800', color: MFG.text, marginBottom: 16, letterSpacing: -0.3 },
+  sectionCard: {
+    backgroundColor: MFG.card, borderRadius: MFG.radiusLg, padding: 16,
+    marginBottom: 16, ...CardShadow,
+  },
+  sectionLabel: { fontSize: 12, fontWeight: '700', color: MFG.textSecondary, letterSpacing: 0.8, marginBottom: 12 },
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: MFG.borderLight },
+  infoLabel: { fontSize: 14, color: MFG.textMuted },
+  infoValue: { fontSize: 14, fontWeight: '600', color: MFG.text, maxWidth: '60%', textAlign: 'right' },
+  timelineRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 6 },
+  timelineTime: { fontSize: 12, fontWeight: '600', color: MFG.textMuted, width: 48 },
+  timelineDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: MFG.border },
+  timelineEvent: { flex: 1, fontSize: 13, color: MFG.text },
+  timelineFlagged: { color: MFG.danger, fontWeight: '700' },
   recoBox: {
-    backgroundColor: '#fffbeb',
-    padding: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#fde68a',
-    gap: 6,
+    backgroundColor: MFG.warningBg, padding: 14, borderRadius: MFG.radiusSm,
+    borderWidth: 1, borderColor: MFG.warning, gap: 6,
   },
   recoAction: { fontSize: 14, fontWeight: '700', color: '#92400e' },
   recoText: { fontSize: 14, color: '#78350f', fontStyle: 'italic' },
-  actionBtns: { flexDirection: 'row', gap: 12, marginTop: 20 },
-  actionBtn: {
-    flex: 1,
-    height: 48,
-    borderWidth: 1.5,
-    borderColor: '#0a7ea4',
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+  actionBtns: { flexDirection: 'row', gap: 12, marginTop: 8 },
+  outlineBtn: {
+    flex: 1, height: 48, borderWidth: 1.5, borderColor: MFG.primary, borderRadius: MFG.radius,
+    alignItems: 'center', justifyContent: 'center',
   },
-  actionBtnText: { color: '#0a7ea4', fontSize: 14, fontWeight: '600' },
-  escalateBtn: { backgroundColor: '#dc2626', borderColor: '#dc2626' },
-  escalateText: { color: '#fff', fontSize: 14, fontWeight: '600' },
+  outlineBtnText: { color: MFG.primary, fontSize: 14, fontWeight: '700' },
+  dangerBtn: {
+    flex: 1, height: 48, backgroundColor: MFG.danger, borderRadius: MFG.radius,
+    alignItems: 'center', justifyContent: 'center',
+    shadowColor: MFG.danger, shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 4,
+  },
+  dangerBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' },
 });

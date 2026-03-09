@@ -1,0 +1,16 @@
+# ============================================================
+# Tamil Nadu Medical Inventory — ML Pipeline
+# Requirements (Python ≥ 3.10)
+# ============================================================
+
+# ── Core Scientific Stack ────────────────────────────────────
+numpy>=2.3.3
+pandas>=3.0.1
+
+# ── Machine Learning Frameworks ──────────────────────────────
+scikit-learn>=1.8.0
+xgboost>=3.2.0
+lightgbm>=4.6.0
+
+# ── Model Persistence ────────────────────────────────────────
+joblib>=1.5.3

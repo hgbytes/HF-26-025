@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
+import { MFG, CardShadow } from '@/constants/theme';
 import { AlertItem, ResolutionAction } from '@/hooks/use-alerts';
 
 interface Props {
@@ -21,13 +22,14 @@ export function ResolveForm({ alert, onResolve, loading }: Props) {
 
   return (
     <View style={styles.container}>
-      <ThemedText style={styles.batchInfo}>Batch: {alert.batchId}</ThemedText>
-      <ThemedText style={styles.drugInfo}>
-        {alert.drug} · {alert.region}
-      </ThemedText>
-      <ThemedText style={styles.alertType}>Alert: {alert.type}</ThemedText>
+      {/* Alert context */}
+      <View style={styles.contextCard}>
+        <ThemedText style={styles.batchInfo}>Batch: {alert.batchId}</ThemedText>
+        <ThemedText style={styles.drugInfo}>{alert.drug}  ·  {alert.region}</ThemedText>
+        <ThemedText style={styles.alertType}>Alert: {alert.type}</ThemedText>
+      </View>
 
-      <ThemedText style={styles.sectionTitle}>── Resolution Action ──</ThemedText>
+      <ThemedText style={styles.sectionLabel}>RESOLUTION ACTION</ThemedText>
 
       {OPTIONS.map((opt) => (
         <TouchableOpacity
@@ -35,22 +37,22 @@ export function ResolveForm({ alert, onResolve, loading }: Props) {
           style={[styles.option, selected === opt.key && styles.optionSelected]}
           onPress={() => setSelected(opt.key)}
           activeOpacity={0.7}>
-          <View style={styles.radio}>
+          <View style={[styles.radio, selected === opt.key && styles.radioActive]}>
             {selected === opt.key && <View style={styles.radioDot} />}
           </View>
           <View style={styles.optionInfo}>
-            <ThemedText style={styles.optionLabel}>{opt.label}</ThemedText>
+            <ThemedText style={[styles.optionLabel, selected === opt.key && styles.optionLabelActive]}>{opt.label}</ThemedText>
             <ThemedText style={styles.optionDesc}>{opt.desc}</ThemedText>
           </View>
         </TouchableOpacity>
       ))}
 
       <View style={styles.notesSection}>
-        <ThemedText style={styles.notesLabel}>Notes (optional):</ThemedText>
+        <ThemedText style={styles.notesLabel}>NOTES (OPTIONAL)</ThemedText>
         <TextInput
           style={styles.notesInput}
-          placeholder="Add investigation notes"
-          placeholderTextColor="#999"
+          placeholder="Add investigation notes..."
+          placeholderTextColor={MFG.textMuted}
           multiline
           numberOfLines={3}
           value={notes}
@@ -75,54 +77,43 @@ export function ResolveForm({ alert, onResolve, loading }: Props) {
 
 const styles = StyleSheet.create({
   container: { gap: 12 },
-  batchInfo: { fontSize: 13, fontFamily: 'monospace', color: '#0a7ea4' },
-  drugInfo: { fontSize: 15, color: '#555' },
-  alertType: { fontSize: 15, fontWeight: '600', color: '#333', marginBottom: 4 },
-  sectionTitle: { textAlign: 'center', color: '#888', fontSize: 13, marginVertical: 8 },
+  contextCard: {
+    backgroundColor: MFG.primaryFaint, borderRadius: MFG.radiusSm, padding: 14,
+    borderWidth: 1, borderColor: MFG.primaryLight, gap: 2,
+  },
+  batchInfo: { fontSize: 13, fontFamily: 'monospace', color: MFG.primary, fontWeight: '600' },
+  drugInfo: { fontSize: 14, color: MFG.textSecondary },
+  alertType: { fontSize: 15, fontWeight: '700', color: MFG.text, marginTop: 2 },
+  sectionLabel: { fontSize: 12, fontWeight: '700', color: MFG.textSecondary, letterSpacing: 0.8, marginTop: 4 },
   option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    gap: 12,
+    flexDirection: 'row', alignItems: 'center', padding: 14,
+    borderRadius: MFG.radius, borderWidth: 1.5, borderColor: MFG.border, gap: 12,
+    backgroundColor: MFG.card,
   },
-  optionSelected: { borderColor: '#0a7ea4', backgroundColor: '#f0f8fb' },
+  optionSelected: { borderColor: MFG.primary, backgroundColor: MFG.primaryFaint },
   radio: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    borderColor: '#ccc',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 22, height: 22, borderRadius: 11,
+    borderWidth: 2, borderColor: MFG.border,
+    alignItems: 'center', justifyContent: 'center',
   },
-  radioDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: '#0a7ea4' },
+  radioActive: { borderColor: MFG.primary },
+  radioDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: MFG.primary },
   optionInfo: { flex: 1 },
-  optionLabel: { fontSize: 15, fontWeight: '600' },
-  optionDesc: { fontSize: 13, color: '#888' },
+  optionLabel: { fontSize: 15, fontWeight: '600', color: MFG.text },
+  optionLabelActive: { color: MFG.primary },
+  optionDesc: { fontSize: 13, color: MFG.textMuted },
   notesSection: { gap: 6, marginTop: 4 },
-  notesLabel: { fontSize: 13, fontWeight: '600', color: '#555' },
+  notesLabel: { fontSize: 12, fontWeight: '700', color: MFG.textSecondary, letterSpacing: 0.6 },
   notesInput: {
-    borderWidth: 1,
-    borderColor: '#d0d5dd',
-    borderRadius: 10,
-    padding: 12,
-    minHeight: 80,
-    textAlignVertical: 'top',
-    fontSize: 14,
-    backgroundColor: '#f9fafb',
-    color: '#11181C',
+    borderWidth: 1.5, borderColor: MFG.border, borderRadius: MFG.radiusSm,
+    padding: 12, minHeight: 80, textAlignVertical: 'top',
+    fontSize: 14, backgroundColor: MFG.primaryFaint, color: MFG.text,
   },
   confirmBtn: {
-    height: 52,
-    backgroundColor: '#0a7ea4',
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 4,
+    height: 54, backgroundColor: MFG.primary, borderRadius: MFG.radius,
+    alignItems: 'center', justifyContent: 'center', marginTop: 4,
+    shadowColor: MFG.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 10, elevation: 5,
   },
-  disabled: { opacity: 0.5 },
-  confirmText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  disabled: { opacity: 0.4 },
+  confirmText: { color: '#fff', fontSize: 16, fontWeight: '700' },
 });

@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { DistributorCard } from '@/components/manufacturer/distributors/DistributorCard';
 import { StockTable } from '@/components/manufacturer/distributors/StockTable';
 import { DemandSupplyChart } from '@/components/manufacturer/distributors/DemandSupplyChart';
 import { TransferRow } from '@/components/manufacturer/distributors/TransferRow';
 import { useDistributors } from '@/hooks/use-distributors';
+import { MFG, CardShadow } from '@/constants/theme';
 
 type Filter = 'all' | 'low' | 'critical' | 'inactive';
 const FILTERS: { key: Filter; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'low', label: 'Low Stock' },
   { key: 'critical', label: 'Critical' },
-  { key: 'inactive', label: 'No Recent Activity' },
+  { key: 'inactive', label: 'Inactive' },
 ];
 
 export default function DistributorsScreen() {
@@ -27,47 +27,50 @@ export default function DistributorsScreen() {
       return null;
     }
     return (
-      <ThemedView style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.detailContainer}>
-          <TouchableOpacity onPress={() => setSelectedId(null)}>
-            <ThemedText style={styles.backLink}>← Back to Distributors</ThemedText>
+      <View style={styles.screen}>
+        <ScrollView contentContainerStyle={styles.detailContainer} showsVerticalScrollIndicator={false}>
+          <TouchableOpacity onPress={() => setSelectedId(null)} style={styles.backBtn}>
+            <ThemedText style={styles.backText}>Back to Distributors</ThemedText>
           </TouchableOpacity>
 
-          <ThemedText type="title" style={styles.detailName}>{detail.name}</ThemedText>
-          <ThemedText style={styles.detailMeta}>District: {detail.region}</ThemedText>
-          <ThemedText style={styles.detailMeta}>Wallet: {detail.wallet}</ThemedText>
+          <ThemedText style={styles.detailName}>{detail.name}</ThemedText>
+          <View style={styles.metaRow}>
+            <View style={styles.metaPill}>
+              <ThemedText style={styles.metaPillText}>{detail.region}</ThemedText>
+            </View>
+          </View>
+          <ThemedText style={styles.wallet} numberOfLines={1}>{detail.wallet}</ThemedText>
 
-          <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>── Current Stock ──</ThemedText>
+          <View style={styles.sectionCard}>
+            <ThemedText style={styles.sectionLabel}>CURRENT STOCK</ThemedText>
             <StockTable items={detail.stock} />
           </View>
 
-          <View style={styles.section}>
+          <View style={styles.sectionCard}>
             <DemandSupplyChart data={detail.demandVsSupply} />
           </View>
 
-          <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>── Recent Transfers ──</ThemedText>
+          <View style={styles.sectionCard}>
+            <ThemedText style={styles.sectionLabel}>RECENT TRANSFERS</ThemedText>
             {detail.recentTransfers.map((t, i) => (
               <TransferRow key={i} transfer={t} />
             ))}
           </View>
         </ScrollView>
-      </ThemedView>
+      </View>
     );
   }
 
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.listContainer}>
+    <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.listContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.filterRow}>
           {FILTERS.map((f) => (
             <TouchableOpacity
               key={f.key}
               style={[styles.filterChip, filter === f.key && styles.filterActive]}
               onPress={() => setFilter(f.key)}>
-              <ThemedText
-                style={[styles.filterText, filter === f.key && styles.filterTextActive]}>
+              <ThemedText style={[styles.filterText, filter === f.key && styles.filterTextActive]}>
                 {f.label}
               </ThemedText>
             </TouchableOpacity>
@@ -76,42 +79,45 @@ export default function DistributorsScreen() {
 
         <View style={styles.cardList}>
           {distributors.map((d) => (
-            <DistributorCard
-              key={d.id}
-              distributor={d}
-              onPress={() => setSelectedId(d.id)}
-            />
+            <DistributorCard key={d.id} distributor={d} onPress={() => setSelectedId(d.id)} />
           ))}
           {distributors.length === 0 && (
-            <ThemedText style={styles.empty}>No distributors match this filter.</ThemedText>
+            <View style={styles.emptyState}>
+              <ThemedText style={styles.emptyText}>No distributors match this filter.</ThemedText>
+            </View>
           )}
         </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  listContainer: { padding: 16, paddingBottom: 40 },
-  filterRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 },
+  screen: { flex: 1, backgroundColor: MFG.bg },
+  listContainer: { padding: 20, paddingBottom: 48 },
+  filterRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 20 },
   filterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#d0d5dd',
-    backgroundColor: '#fff',
+    paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20,
+    borderWidth: 1.5, borderColor: MFG.border, backgroundColor: MFG.card,
   },
-  filterActive: { backgroundColor: '#0a7ea4', borderColor: '#0a7ea4' },
-  filterText: { fontSize: 13, color: '#555' },
-  filterTextActive: { color: '#fff', fontWeight: '600' },
+  filterActive: { backgroundColor: MFG.primary, borderColor: MFG.primary },
+  filterText: { fontSize: 13, color: MFG.textSecondary, fontWeight: '500' },
+  filterTextActive: { color: '#fff', fontWeight: '700' },
   cardList: { gap: 12 },
-  empty: { textAlign: 'center', color: '#aaa', marginTop: 40, fontSize: 15 },
-  // Detail view
-  detailContainer: { padding: 16, paddingBottom: 40 },
-  backLink: { color: '#0a7ea4', fontSize: 15, fontWeight: '600', marginBottom: 12 },
-  detailName: { fontSize: 22, color: '#0a7ea4', marginBottom: 4 },
-  detailMeta: { fontSize: 14, color: '#888' },
-  section: { marginTop: 20, gap: 8 },
-  sectionTitle: { textAlign: 'center', color: '#888', fontSize: 13, marginBottom: 4 },
+  emptyState: { alignItems: 'center', marginTop: 60 },
+  emptyText: { color: MFG.textMuted, fontSize: 15 },
+  // Detail
+  detailContainer: { padding: 20, paddingBottom: 48 },
+  backBtn: { marginBottom: 16 },
+  backText: { color: MFG.primary, fontSize: 15, fontWeight: '600' },
+  detailName: { fontSize: 24, fontWeight: '800', color: MFG.text, letterSpacing: -0.3, marginBottom: 8 },
+  metaRow: { flexDirection: 'row', gap: 8, marginBottom: 6 },
+  metaPill: { backgroundColor: MFG.primaryFaint, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
+  metaPillText: { fontSize: 13, color: MFG.primary, fontWeight: '600' },
+  wallet: { fontSize: 12, fontFamily: 'monospace', color: MFG.textMuted, marginBottom: 20 },
+  sectionCard: {
+    backgroundColor: MFG.card, borderRadius: MFG.radiusLg, padding: 16,
+    marginBottom: 16, ...CardShadow,
+  },
+  sectionLabel: { fontSize: 12, fontWeight: '700', color: MFG.textSecondary, letterSpacing: 0.8, marginBottom: 12 },
 });
