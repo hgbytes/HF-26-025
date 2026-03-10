@@ -70,13 +70,6 @@ export default function DistributorLayout() {
         }}
       />
       <Tabs.Screen
-        name="history"
-        options={{
-          title: 'Chain History',
-          tabBarIcon: ({ color }) => <IconSymbol size={24} name="clock.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="alerts"
         options={{
           title: 'Alerts',

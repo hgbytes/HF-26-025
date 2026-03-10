@@ -1,6 +1,8 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { api } from '@/services/api';
 import { useAuth } from '@/contexts/auth-context';
+
+const POLL_INTERVAL = 15_000; // 15 seconds
 
 export type AuditAction = 'BATCH_CREATED' | 'TRANSFER_INITIATED' | 'TRANSFER_ACCEPTED' | 'TRANSFER_REJECTED' | 'BATCH_FLAGGED' | 'BATCH_DEACTIVATED' | 'EXPIRY_CHECK';
 
@@ -15,6 +17,7 @@ export interface AuditEntry {
   txHash: string;
   blockNumber: number;
   details: string;
+  isNew?: boolean;
 }
 
 export interface CustodyEntry {
@@ -62,7 +65,7 @@ function inferRole(action: string): string {
   return 'System';
 }
 
-function mapEntry(e: RawAuditEntry, drug: string): AuditEntry {
+function mapEntry(e: RawAuditEntry, drug: string, isNew = false): AuditEntry {
   return {
     id: e.entryId,
     action: e.action as AuditAction,
@@ -74,6 +77,7 @@ function mapEntry(e: RawAuditEntry, drug: string): AuditEntry {
     txHash: '',
     blockNumber: 0,
     details: e.metadata || e.action.replace(/_/g, ' ').toLowerCase(),
+    isNew,
   };
 }
 
@@ -83,30 +87,66 @@ export function useChainHistory() {
   const [batchChains, setBatchChains] = useState<Map<string, BatchChain>>(new Map());
   const [actionFilter, setActionFilter] = useState<'all' | AuditAction>('all');
   const [loading, setLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [newCount, setNewCount] = useState(0);
+  const knownIds = useRef<Set<string>>(new Set());
+  const isFirstFetch = useRef(true);
+
+  const fetchAudit = useCallback(async (isInitial: boolean) => {
+    if (!wallet) return;
+    try {
+      const r = await api.get<{ entries: RawAuditEntry[] }>(`/audit/wallet/${encodeURIComponent(wallet)}`);
+
+      const batchIds = [...new Set(r.entries.map((e) => e.batchId))];
+      const drugMap = new Map<string, string>();
+      await Promise.all(
+        batchIds.slice(0, 20).map(async (bid) => {
+          try {
+            const b = await api.get<{ drugName: string }>(`/batches/${encodeURIComponent(bid)}`);
+            drugMap.set(bid, b.drugName);
+          } catch { drugMap.set(bid, bid); }
+        }),
+      );
+
+      const incoming = r.entries.map((e) => mapEntry(
+        e,
+        drugMap.get(e.batchId) || e.batchId,
+        !isInitial && !knownIds.current.has(e.entryId),
+      ));
+
+      const freshIds = incoming.filter((e) => e.isNew).map((e) => e.id);
+      if (!isInitial && freshIds.length > 0) {
+        setNewCount((prev) => prev + freshIds.length);
+        // Clear isNew flag after 8 seconds so highlight fades
+        setTimeout(() => {
+          setAuditLog((prev) =>
+            prev.map((e) => (freshIds.includes(e.id) ? { ...e, isNew: false } : e)),
+          );
+        }, 8_000);
+      }
+
+      r.entries.forEach((e) => knownIds.current.add(e.entryId));
+      setAuditLog(incoming);
+      setLastUpdated(new Date());
+    } catch {
+      // keep previous data on poll errors
+    } finally {
+      if (isInitial) setLoading(false);
+    }
+  }, [wallet]);
 
   useEffect(() => {
     if (!wallet) { setLoading(false); return; }
+    isFirstFetch.current = true;
+    knownIds.current = new Set();
     setLoading(true);
+    setNewCount(0);
 
-    api.get<{ entries: RawAuditEntry[] }>(`/audit/wallet/${encodeURIComponent(wallet)}`)
-      .then(async (r) => {
-        // Get drug names for each unique batchId
-        const batchIds = [...new Set(r.entries.map((e) => e.batchId))];
-        const drugMap = new Map<string, string>();
-        await Promise.all(
-          batchIds.slice(0, 20).map(async (bid) => {
-            try {
-              const b = await api.get<{ drugName: string }>(`/batches/${encodeURIComponent(bid)}`);
-              drugMap.set(bid, b.drugName);
-            } catch { drugMap.set(bid, bid); }
-          }),
-        );
+    fetchAudit(true).then(() => { isFirstFetch.current = false; });
 
-        setAuditLog(r.entries.map((e) => mapEntry(e, drugMap.get(e.batchId) || e.batchId)));
-      })
-      .catch(() => setAuditLog([]))
-      .finally(() => setLoading(false));
-  }, [wallet]);
+    const timer = setInterval(() => fetchAudit(false), POLL_INTERVAL);
+    return () => clearInterval(timer);
+  }, [wallet, fetchAudit]);
 
   const filtered = auditLog.filter((e) => {
     if (actionFilter === 'all') return true;
@@ -156,5 +196,20 @@ export function useChainHistory() {
     [batchChains],
   );
 
-  return { auditLog: filtered, actionFilter, setActionFilter, getEntry, getBatchChain, loading };
+  const clearNewCount = useCallback(() => setNewCount(0), []);
+
+  const refresh = useCallback(() => fetchAudit(false), [fetchAudit]);
+
+  return {
+    auditLog: filtered,
+    actionFilter,
+    setActionFilter,
+    getEntry,
+    getBatchChain,
+    loading,
+    lastUpdated,
+    newCount,
+    clearNewCount,
+    refresh,
+  };
 }
